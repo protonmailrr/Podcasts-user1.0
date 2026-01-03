@@ -390,10 +390,93 @@ async def get_xp_history(
 async def get_user_progress(user_id: str):
     """
     Get user progress info (XP, level, next level requirements)
+    Auto-creates user if not found
     """
     user = await db.users.find_one({"id": user_id})
+    
+    # Auto-create user if not found
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        # Check if this wallet is admin/owner
+        settings = await db.club_settings.find_one({})
+        is_admin = False
+        is_owner = False
+        role = "member"
+        
+        if settings:
+            owner_wallet = settings.get("owner_wallet", "").lower()
+            admin_wallets = [w.lower() for w in settings.get("admin_wallets", [])]
+            wallet_lower = user_id.lower()
+            
+            is_owner = wallet_lower == owner_wallet
+            is_admin = wallet_lower in admin_wallets
+            
+            if is_owner:
+                role = "owner"
+            elif is_admin:
+                role = "admin"
+        
+        # Create new user
+        new_user = {
+            "id": user_id,
+            "name": f"User {user_id[:8]}",
+            "username": f"user_{user_id[:8]}",
+            "wallet_address": user_id,
+            "role": role,
+            "level": 1,
+            "xp_total": 0,
+            "badges": [],
+            "xp_breakdown": {
+                "listening_time": 0,
+                "live_attendance": 0,
+                "hand_raises": 0,
+                "speeches_given": 0,
+                "support_received": 0
+            },
+            "voice_stats": {
+                "total_listen_time": 0,
+                "total_speeches": 0,
+                "hand_raise_count": 0,
+                "support_given": 0,
+                "support_received": 0
+            },
+            "engagement_score": 0,
+            "priority_score": 50,
+            "joined_at": datetime.now(timezone.utc),
+            "created_at": datetime.now(timezone.utc)
+        }
+        
+        # If admin/owner - give all badges and higher stats
+        if is_admin or is_owner:
+            ALL_BADGES = [
+                {"key": "early_member", "name": "Early Member", "description": "Joined in the first 30 days of the club", "type": "participation"},
+                {"key": "10_sessions", "name": "10 Sessions Attended", "description": "Participated in 10 live sessions", "type": "participation"},
+                {"key": "first_speaker", "name": "First Time Speaker", "description": "Gave your first speech", "type": "participation"},
+                {"key": "100_hours", "name": "100 Hours in Club", "description": "Listened for 100+ hours", "type": "participation"},
+                {"key": "active_raiser", "name": "Active Hand Raiser", "description": "Raised hand 50+ times", "type": "participation"},
+                {"key": "supporter", "name": "Community Supporter", "description": "Supported 25+ speeches", "type": "participation"},
+                {"key": "insightful_speaker", "name": "Insightful Speaker", "description": "Received 50+ supports marked as 'insightful'", "type": "contribution"},
+                {"key": "community_helper", "name": "Community Helper", "description": "Actively helps other members", "type": "contribution"},
+                {"key": "moderator_trusted", "name": "Moderator Trusted", "description": "Trusted by moderators", "type": "contribution"},
+                {"key": "signal_provider", "name": "Signal Provider", "description": "Provides valuable insights regularly", "type": "contribution"},
+                {"key": "core_member", "name": "Core Member", "description": "Essential part of the club community", "type": "authority"},
+                {"key": "verified_expert", "name": "Verified Expert", "description": "Recognized expert in their field", "type": "authority"},
+                {"key": "club_council", "name": "Club Council", "description": "Member of the club council", "type": "authority"},
+                {"key": "long_term_holder", "name": "Long-Term Holder", "description": "Active member for 1+ year", "type": "authority"},
+            ]
+            new_user["badges"] = ALL_BADGES
+            new_user["level"] = 5
+            new_user["xp_total"] = 10000
+            new_user["xp_breakdown"] = {
+                "listening_time": 3000,
+                "live_attendance": 2500,
+                "hand_raises": 500,
+                "speeches_given": 1000,
+                "support_received": 500
+            }
+        
+        await db.users.insert_one(new_user)
+        user = new_user
+        logger.info(f"Auto-created user: {user_id} with role: {role}")
     
     xp_total = user.get('xp_total', 0)
     current_level = user.get('level', 1)
@@ -416,7 +499,7 @@ async def get_user_progress(user_id: str):
     
     return {
         "user_id": user_id,
-        "user_name": user['name'],
+        "user_name": user.get('name', f"User {user_id[:8]}"),
         "xp_total": xp_total,
         "current_level": current_level,
         "level_name": LEVEL_NAMES[current_level],
@@ -424,7 +507,13 @@ async def get_user_progress(user_id: str):
         "next_level_name": LEVEL_NAMES.get(next_level) if next_level else "Max Level",
         "xp_to_next_level": xp_to_next,
         "progress_percent": round(progress_percent, 1),
-        "xp_breakdown": user.get('xp_breakdown', {}),
+        "xp_breakdown": user.get('xp_breakdown', {
+            "listening_time": 0,
+            "live_attendance": 0,
+            "hand_raises": 0,
+            "speeches_given": 0,
+            "support_received": 0
+        }),
         "engagement_score": user.get('engagement_score', 0),
         "priority_score": user.get('priority_score', 50)
     }
