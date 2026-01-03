@@ -183,6 +183,12 @@ export const MyProgress = () => {
             <div className="flex items-center gap-2 mb-2">
               <Zap className="w-4 h-4 text-gray-500" />
               <span className="text-sm text-gray-500">Engagement</span>
+              <InfoTooltip
+                title="Engagement Score"
+                description="Your activity level in the club. Calculated based on listening time, live session attendance, hand raises, and interactions."
+                formula="Score = (Listening × 0.3) + (Attendance × 0.3) + (Raises × 0.2) + (Interactions × 0.2)"
+                status={{ active: progress.engagement_score > 0, text: progress.engagement_score > 50 ? 'Highly engaged' : 'Keep participating!' }}
+              />
             </div>
             <div className="text-2xl font-bold text-gray-900">{progress.engagement_score.toFixed(1)}</div>
             <div className="text-xs text-gray-400">out of 100</div>
@@ -192,6 +198,12 @@ export const MyProgress = () => {
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-4 h-4 text-gray-500" />
               <span className="text-sm text-gray-500">Priority Score</span>
+              <InfoTooltip
+                title="Priority Score"
+                description="Your position in the hand raise queue during live sessions. Higher score means you get called to speak earlier."
+                formula="Priority = (Level × 20) + (XP × 0.3) + (Engagement × 0.5)"
+                status={{ active: true, text: progress.priority_score >= 50 ? 'Good priority' : 'Increase with activity' }}
+              />
             </div>
             <div className="text-2xl font-bold text-gray-900">{progress.priority_score.toFixed(1)}</div>
             <div className="text-xs text-gray-400">hand raise queue</div>
