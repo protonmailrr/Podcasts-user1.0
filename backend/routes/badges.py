@@ -319,20 +319,48 @@ async def get_user_badges(user_id: str):
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
-    badges = user.get('badges', [])
+    raw_badges = user.get('badges', [])
     
-    # Handle both string format ["participation"] and object format [{"type": "participation", ...}]
-    def get_badge_type(badge):
+    # Convert badge to full object format
+    def normalize_badge(badge):
         if isinstance(badge, str):
-            return badge
+            # It's a badge key like "participation" or "first_speaker"
+            if badge in ALL_BADGES:
+                info = ALL_BADGES[badge]
+                return {
+                    "key": badge,
+                    "type": info['type'],
+                    "name": info['name'],
+                    "description": info['description'],
+                    "icon": info.get('icon', '🏅')
+                }
+            else:
+                # Unknown badge key, try to determine type from string
+                return {
+                    "key": badge,
+                    "type": badge if badge in ['participation', 'contribution', 'authority'] else 'participation',
+                    "name": badge.replace('_', ' ').title(),
+                    "description": f"{badge.replace('_', ' ').title()} badge",
+                    "icon": "🏅"
+                }
         elif isinstance(badge, dict):
-            return badge.get('type')
+            # Already in object format, ensure all fields exist
+            return {
+                "key": badge.get('key', badge.get('name', 'unknown').lower().replace(' ', '_')),
+                "type": badge.get('type', 'participation'),
+                "name": badge.get('name', 'Unknown Badge'),
+                "description": badge.get('description', ''),
+                "icon": badge.get('icon', '🏅')
+            }
         return None
     
+    # Normalize all badges
+    badges = [normalize_badge(b) for b in raw_badges if normalize_badge(b)]
+    
     # Group by type
-    participation_badges = [b for b in badges if get_badge_type(b) == 'participation']
-    contribution_badges = [b for b in badges if get_badge_type(b) == 'contribution']
-    authority_badges = [b for b in badges if get_badge_type(b) == 'authority']
+    participation_badges = [b for b in badges if b['type'] == 'participation']
+    contribution_badges = [b for b in badges if b['type'] == 'contribution']
+    authority_badges = [b for b in badges if b['type'] == 'authority']
     
     return {
         "user_id": user_id,
