@@ -14,43 +14,48 @@ export const MyProgress = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Get current user ID based on test mode or actual user
-  const testMode = localStorage.getItem('testMode') || 'user';
-  const testUserId = testMode === 'owner' ? 'demo-owner-001' : 
-                     testMode === 'admin' ? 'demo-admin-002' : 'demo-user-003';
-  
-  const possibleUserIds = [
-    user?.id,
-    walletAddress,
-    testUserId
-  ].filter(Boolean);
+  // Get current user ID - prioritize wallet address
+  const userId = walletAddress || user?.id;
 
   useEffect(() => {
-    fetchProgressWithFallback();
-  }, [user?.id, walletAddress]);
+    if (userId) {
+      fetchProgress(userId);
+    } else {
+      setError('Подключите кошелёк чтобы увидеть ваш прогресс');
+      setLoading(false);
+    }
+  }, [userId]);
 
-  const fetchProgressWithFallback = async () => {
+  const fetchProgress = async (id) => {
     setLoading(true);
     setError(null);
     
-    for (const userId of possibleUserIds) {
+    try {
+      const [progressRes, badgesRes] = await Promise.all([
+        axios.get(`${API}/xp/${id}/progress`),
+        axios.get(`${API}/users/${id}/badges`)
+      ]);
+      
+      setProgress(progressRes.data);
+      setBadges(badgesRes.data);
+      setLoading(false);
+    } catch (err) {
+      // Try with lowercase wallet
       try {
+        const lowerId = id.toLowerCase();
         const [progressRes, badgesRes] = await Promise.all([
-          axios.get(`${API}/xp/${userId}/progress`),
-          axios.get(`${API}/users/${userId}/badges`)
+          axios.get(`${API}/xp/${lowerId}/progress`),
+          axios.get(`${API}/users/${lowerId}/badges`)
         ]);
         
         setProgress(progressRes.data);
         setBadges(badgesRes.data);
         setLoading(false);
-        return;
-      } catch (err) {
-        continue;
+      } catch (err2) {
+        setError('Не удалось загрузить прогресс. Подключите кошелёк.');
+        setLoading(false);
       }
     }
-    
-    setError('Could not load progress. Please connect your wallet.');
-    setLoading(false);
   };
 
   const getLevelName = (level) => {
