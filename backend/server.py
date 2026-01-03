@@ -191,11 +191,11 @@ async def startup_check():
             if club:
                 logger.info(f"✅ Private Voice Club initialized: {club.get('club_name')}")
             else:
-                logger.warning(f"⚠️  Club not initialized. Run migration script.")
+                logger.warning("⚠️  Club not initialized. Run migration script.")
         else:
             logger.info(f"✅ Database status: {authors_count} authors (old), {podcasts_count} podcasts")
             if authors_count > 0:
-                logger.warning(f"⚠️  Migration needed: Run python migration_to_private_club.py")
+                logger.warning("⚠️  Migration needed: Run python migration_to_private_club.py")
         
         # Start reminder task for scheduled sessions
         try:
