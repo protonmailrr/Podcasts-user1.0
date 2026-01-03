@@ -55,8 +55,8 @@ export const Navigation = () => {
     return () => clearInterval(interval);
   }, [walletAddress]);
   
-  // Navigation items (conditionally include Create and Analytics based on role)
-  // For private club - allow all users to see Live Management
+  // Navigation items (conditionally include Create, Analytics and Live based on role)
+  // Live, Analytics, Create - only for admins/owners
   const canCreateContent = userRole.is_admin || userRole.is_owner;
   
   const navItems = [
@@ -64,7 +64,7 @@ export const Navigation = () => {
     { path: '/members', icon: Users, label: 'Members' },
     { path: '/progress', icon: TrendingUp, label: 'Progress' },
     { path: '/library', icon: Library, label: 'Library' },
-    { path: '/live-management', icon: Radio, label: 'Live' },
+    ...(canCreateContent ? [{ path: '/live-management', icon: Radio, label: 'Live' }] : []),
     ...(canCreateContent ? [{ path: '/analytics', icon: BarChart3, label: 'Analytics' }] : []),
     ...(canCreateContent ? [{ path: '/create', icon: Plus, label: 'Create', isButton: true }] : []),
   ];
