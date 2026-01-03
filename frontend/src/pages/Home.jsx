@@ -596,6 +596,24 @@ export const Home = () => {
                     {tag.charAt(0).toUpperCase() + tag.slice(1)} <X className="w-3 h-3 ml-1" />
                   </Badge>
                 ))}
+                {(minDuration > 0 || maxDuration < 7200) && (
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
+                    onClick={() => { setMinDuration(0); setMaxDuration(7200); }}
+                  >
+                    {formatDuration(minDuration)} - {formatDuration(maxDuration)} <X className="w-3 h-3 ml-1" />
+                  </Badge>
+                )}
+                {(dateFrom || dateTo) && (
+                  <Badge 
+                    variant="secondary" 
+                    className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
+                    onClick={() => { setDateFrom(''); setDateTo(''); }}
+                  >
+                    {dateFrom || '...'} → {dateTo || '...'} <X className="w-3 h-3 ml-1" />
+                  </Badge>
+                )}
               </div>
             )}
           </Card>
@@ -603,7 +621,7 @@ export const Home = () => {
 
         {/* Podcasts by Tags - Horizontal Scroll Rows */}
         <div className="space-y-2">
-          {searchQuery || selectedTags.length > 0 ? (
+          {hasActiveFilters ? (
             // Search/Filter results - single row
             filteredPodcasts.length > 0 ? (
               <HorizontalScrollRow
