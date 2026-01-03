@@ -220,8 +220,8 @@ export const WalletSheet = () => {
                 <p className="text-xs text-gray-500 mb-2 font-medium">WALLET ADDRESS</p>
                 <div className="flex items-center gap-2 bg-gray-50 rounded-xl p-3">
                   <Wallet className="w-4 h-4 text-gray-500" />
-                  <span className="flex-1 font-mono text-sm text-gray-700 truncate">
-                    {walletAddress}
+                  <span className="flex-1 font-mono text-sm text-gray-700">
+                    {walletAddress.slice(0, 6)}...{walletAddress.slice(-4)}
                   </span>
                   <button
                     onClick={copyAddress}
