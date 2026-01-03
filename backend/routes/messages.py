@@ -42,7 +42,7 @@ async def get_messages(user1_id: str, user2_id: str):
             try:
                 dt = datetime.fromisoformat(msg['created_at'].replace('Z', '+00:00'))
                 msg['time'] = dt.strftime("%H:%M")
-            except:
+            except Exception:
                 msg['time'] = ""
     
     return messages
@@ -238,7 +238,7 @@ async def get_conversations(user_id: str):
             try:
                 dt = datetime.fromisoformat(conv['last_time'].replace('Z', '+00:00'))
                 time_str = dt.strftime("%H:%M")
-            except:
+            except Exception:
                 pass
         
         result.append({

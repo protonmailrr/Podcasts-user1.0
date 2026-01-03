@@ -90,7 +90,7 @@ async def generate_tags_from_transcript(transcript: str) -> list:
             tags = json.loads(tags_text)
             if isinstance(tags, list):
                 return tags
-        except:
+        except Exception:
             # Якщо не JSON, витягнути теги з тексту
             tags = [tag.strip().strip('"').strip("'") for tag in tags_text.split(',')]
             return tags[:7]

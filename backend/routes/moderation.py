@@ -95,7 +95,7 @@ async def delete_podcast_moderation(podcast_id: str):
         try:
             from bson import ObjectId
             await fs.delete(ObjectId(podcast["audio_file_id"]))
-        except:
+        except Exception:
             pass
     
     # Delete podcast

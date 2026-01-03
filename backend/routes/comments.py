@@ -86,7 +86,7 @@ async def add_comment(
     try:
         from routes.websocket import broadcast_new_comment
         await broadcast_new_comment(podcast_id, comment)
-    except:
+    except Exception:
         pass
     
     # Trigger webhook
@@ -97,7 +97,7 @@ async def add_comment(
             'comment_id': comment_id,
             'user_id': user_id
         })
-    except:
+    except Exception:
         pass
     
     return comment

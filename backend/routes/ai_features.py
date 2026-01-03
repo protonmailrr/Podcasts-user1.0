@@ -31,7 +31,7 @@ async def find_podcast_by_id(podcast_id: str):
     if not podcast:
         try:
             podcast = await podcasts_collection.find_one({"_id": ObjectId(podcast_id)})
-        except:
+        except Exception:
             pass
     return podcast
 
@@ -50,7 +50,7 @@ async def update_podcast_by_id(podcast_id: str, update_data: dict):
                 {"_id": ObjectId(podcast_id)},
                 {"$set": update_data}
             )
-        except:
+        except Exception:
             pass
     return result
 

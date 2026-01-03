@@ -70,12 +70,12 @@ async def search_podcasts(
     if date_from:
         try:
             date_query["$gte"] = date_from
-        except:
+        except Exception:
             pass
     if date_to:
         try:
             date_query["$lte"] = date_to
-        except:
+        except Exception:
             pass
     if date_query:
         query["created_at"] = date_query

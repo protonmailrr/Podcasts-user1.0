@@ -520,7 +520,7 @@ async def create_live_session(
     if session_data.scheduled_at:
         try:
             scheduled_at = datetime.fromisoformat(session_data.scheduled_at.replace('Z', '+00:00'))
-        except:
+        except Exception:
             scheduled_at = datetime.now(timezone.utc)
     else:
         scheduled_at = datetime.now(timezone.utc)

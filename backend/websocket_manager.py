@@ -104,7 +104,7 @@ class ConnectionManager:
                 for connection in self.active_connections[room_id]:
                     try:
                         await connection.send_json(message)
-                    except:
+                    except Exception:
                         pass
     
     def get_room_stats(self, room_id: str) -> dict:

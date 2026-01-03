@@ -182,7 +182,7 @@ async def delete_podcast(podcast_id: str):
         fs = await get_fs()
         try:
             await fs.delete(podcast["audio_file_id"])
-        except:
+        except Exception:
             pass
     
     # Delete podcast
@@ -257,7 +257,7 @@ async def upload_audio(
         try:
             from bson import ObjectId
             await fs.delete(ObjectId(podcast["audio_file_id"]))
-        except:
+        except Exception:
             pass
     
     # Upload to GridFS

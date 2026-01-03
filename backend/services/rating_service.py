@@ -40,7 +40,7 @@ def calculate_author_rating(author_data: Dict[str, Any], podcasts_data: list) ->
         if isinstance(created_at, str):
             try:
                 created_dates.append(datetime.fromisoformat(created_at.replace('Z', '+00:00')))
-            except:
+            except Exception:
                 pass
     
     if created_dates:
