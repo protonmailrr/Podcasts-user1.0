@@ -185,19 +185,69 @@ export const MyProgress = () => {
               <span className="text-sm text-gray-500">{badges.total_badges} earned</span>
             </div>
             
-            <div className="p-4 flex flex-wrap gap-3">
-              {['participation', 'contribution', 'authority'].map((category) => (
-                badges.badges[category]?.map((badge, idx) => (
-                  <div
-                    key={`${category}-${idx}`}
-                    className="inline-flex items-center gap-2 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg"
-                    title={badge.description}
-                  >
-                    <span className="text-lg">{badge.icon}</span>
-                    <span className="text-sm font-medium text-gray-700">{badge.name}</span>
+            <div className="p-4 space-y-4">
+              {/* Participation Badges */}
+              {badges.badges.participation?.length > 0 && (
+                <div>
+                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+                    Participation
                   </div>
-                ))
-              ))}
+                  <div className="flex flex-wrap gap-2">
+                    {badges.badges.participation.map((badge, idx) => (
+                      <div
+                        key={`participation-${idx}`}
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg cursor-help"
+                        title={badge.description}
+                      >
+                        <span className="text-lg">{badge.icon || '🏅'}</span>
+                        <span className="text-sm font-medium text-blue-700">{badge.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Contribution Badges */}
+              {badges.badges.contribution?.length > 0 && (
+                <div>
+                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+                    Contribution
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {badges.badges.contribution.map((badge, idx) => (
+                      <div
+                        key={`contribution-${idx}`}
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg cursor-help"
+                        title={badge.description}
+                      >
+                        <span className="text-lg">{badge.icon || '🏅'}</span>
+                        <span className="text-sm font-medium text-green-700">{badge.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Authority Badges */}
+              {badges.badges.authority?.length > 0 && (
+                <div>
+                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
+                    Authority
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    {badges.badges.authority.map((badge, idx) => (
+                      <div
+                        key={`authority-${idx}`}
+                        className="inline-flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg cursor-help"
+                        title={badge.description}
+                      >
+                        <span className="text-lg">{badge.icon || '🏅'}</span>
+                        <span className="text-sm font-medium text-purple-700">{badge.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
