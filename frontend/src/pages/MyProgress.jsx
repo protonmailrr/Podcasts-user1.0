@@ -60,7 +60,7 @@ export const MyProgress = () => {
     if (userId) {
       fetchProgress(userId);
     } else {
-      setError('Подключите кошелёк чтобы увидеть ваш прогресс');
+      setError('Connect your wallet to see your progress');
       setLoading(false);
     }
   }, [userId]);
