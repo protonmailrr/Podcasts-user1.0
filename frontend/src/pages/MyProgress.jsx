@@ -204,9 +204,9 @@ export const MyProgress = () => {
             <h3 className="font-semibold text-gray-900">XP Breakdown</h3>
             <InfoTooltip
               title="XP Breakdown"
-              description="Детализация источников вашего опыта. XP начисляется за различные активности в клубе."
+              description="Detailed breakdown of your experience sources. XP is awarded for various activities in the club."
               formula="Total XP = Listening + Attendance + Raises + Speeches + Support"
-              status={{ active: true, text: 'XP начисляется автоматически' }}
+              status={{ active: true, text: 'XP awarded automatically' }}
             />
           </div>
           <div className="divide-y divide-gray-50">
