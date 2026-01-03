@@ -236,7 +236,15 @@ export const MyProgress = () => {
         {badges && badges.total_badges > 0 && (
           <div className="bg-white border border-gray-200 rounded-lg">
             <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="font-semibold text-gray-900">Badges</h3>
+              <div className="flex items-center">
+                <h3 className="font-semibold text-gray-900">Badges</h3>
+                <InfoTooltip
+                  title="Badges"
+                  description="Достижения за активность в клубе. Бейджи выдаются автоматически при достижении определённых условий или вручную администратором."
+                  formula="3 категории: Participation, Contribution, Authority"
+                  status={{ active: true, text: `${badges.total_badges} из 14 получено` }}
+                />
+              </div>
               <span className="text-sm text-gray-500">{badges.total_badges} earned</span>
             </div>
             
