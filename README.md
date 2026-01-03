@@ -1,298 +1,187 @@
-# FOMO Podcasts Platform
+# 🎙️ FOMO Voice Club
 
-Приватная платформа для голосовых подкастов с Telegram интеграцией, live streaming и gamification системой.
+**Private Voice Podcast Platform with Live Streaming & Gamification**
 
-## 🚀 Основные функции
+[![React](https://img.shields.io/badge/React-18.x-blue)](https://reactjs.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-green)](https://fastapi.tiangolo.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6.0+-green)](https://www.mongodb.com/)
+[![LiveKit](https://img.shields.io/badge/LiveKit-WebRTC-orange)](https://livekit.io/)
+[![Telegram](https://img.shields.io/badge/Telegram-Bot-blue)](https://core.telegram.org/bots)
 
-- **Live Streaming** - WebRTC аудио через LiveKit
-- **Telegram Voice Chat** - слушатели присоединяются через Telegram
-- **Real-time Chat** - WebSocket чат с эмодзи реакциями
-- **Hand Raise** - система поднятия руки для выступления
-- **XP & Badges** - геймификация с уровнями и наградами
-- **Telegram Integration** - уведомления + recording bot
-- **Auto Podcast Creation** - автоматическое создание подкастов из live сессий
-- **AI Summary** - AI генерация summary для подкастов
-- **Admin Panel** - управление участниками и настройками
+## 📋 Overview
 
----
+FOMO Voice Club is a private voice podcast platform that combines:
+- 🎤 **Live Voice Streaming** via LiveKit WebRTC
+- 📱 **Telegram Integration** for notifications and recording
+- 🏆 **Gamification System** with XP, Levels, and Badges
+- 🔐 **Wallet-based Authentication** for private club access
+- 📊 **Analytics Dashboard** for club management
 
-## 📁 Структура проекта
+## 🏗️ Architecture
 
 ```
 /app
-├── backend/                    # FastAPI Backend
-│   ├── server.py              # Главный сервер
-│   ├── .env                   # Переменные окружения (КЛЮЧИ!)
-│   ├── requirements.txt       # Python зависимости
-│   ├── routes/                # API маршруты
-│   │   ├── live_sessions.py   # Live streaming + WebSocket + Auto Podcast
-│   │   ├── admin_panel.py     # Админка
-│   │   ├── telegram.py        # Telegram интеграция
-│   │   ├── xp.py              # XP система
+├── backend/                 # FastAPI Backend
+│   ├── routes/             # API Endpoints (modular)
+│   │   ├── podcasts.py     # Podcast CRUD
+│   │   ├── live_sessions.py # Live streaming
+│   │   ├── xp.py           # XP & Levels
+│   │   ├── badges.py       # Badge system
 │   │   └── ...
-│   ├── services/
-│   │   └── telegram_service.py # Telegram уведомления
-│   ├── telegram_recording_bot.py # Бот записи из @Podcast_F
-│   └── init_demo_users.py     # Инициализация демо данных
+│   ├── services/           # Business logic
+│   ├── models.py           # Pydantic models
+│   └── server.py           # Main FastAPI app
 │
-├── frontend/                   # React Frontend
+├── frontend/               # React Frontend
 │   ├── src/
-│   │   ├── pages/
-│   │   │   ├── Home.jsx            # Главная (поиск, фильтры, теги)
-│   │   │   ├── LiveRoom.jsx        # Live комната (host)
-│   │   │   ├── LiveRoomView.jsx    # Live комната (listener)
-│   │   │   ├── LiveManagement.jsx  # Управление стримами
-│   │   │   ├── PodcastDetail.jsx   # Страница подкаста
+│   │   ├── components/     # Reusable UI components
+│   │   │   ├── ui/         # shadcn/ui components
 │   │   │   └── ...
-│   │   └── components/
-│   │       ├── PodcastCard.jsx     # Карточка подкаста
-│   │       └── ...
-│   └── .env                   # Frontend переменные
+│   │   ├── pages/          # Route pages
+│   │   ├── context/        # React contexts
+│   │   └── utils/          # Helper functions
+│   └── package.json
 │
-├── README.md                  # Этот файл
-├── QUICKSTART.md              # Быстрый запуск
-└── TASKS.md                   # Текущие задачи
+└── tests/                  # Test files
 ```
 
----
+## 🚀 Quick Start
 
-## 🔑 Ключи и API
+### Prerequisites
+- Node.js 18+
+- Python 3.11+
+- MongoDB 6.0+
 
-### Расположение: `/app/backend/.env`
+### Installation
 
-```env
-# MongoDB
-MONGO_URL="mongodb://localhost:27017"
-DB_NAME="fomo_voice_club"
-
-# JWT
-JWT_SECRET_KEY="fomo-podcast-secret-key-2025"
-
-# Telegram Bot
-TELEGRAM_BOT_TOKEN="8293451127:AAEVo5vQV_vJqoziVTDKHYJiOYUZQN-2M2E"
-
-# Telegram Channels (разделены на 2)
-# @Podcast_F - для записей стримов (Recording Bot мониторит)
-TELEGRAM_RECORDING_CHANNEL_ID="-1003133850361"
-TELEGRAM_RECORDING_CHANNEL="Podcast_F"
-
-# @P_FOMO - для уведомлений о стримах и Voice Chat
-TELEGRAM_NOTIFICATIONS_CHANNEL_ID="-1003534592932"
-TELEGRAM_NOTIFICATIONS_CHANNEL="P_FOMO"
-
-# LiveKit (WebRTC Audio)
-LIVEKIT_URL="wss://fomo-bxb0f38x.livekit.cloud"
-LIVEKIT_API_KEY="APIqNLg599MoAHc"
-LIVEKIT_API_SECRET="9wWu3BHo199HEcvcE22KMpcuSDfqy7K7TA5oXEOaXae"
-```
-
----
-
-## 📱 Telegram Integration (2 канала)
-
-### Архитектура:
-
-| Канал | ID | Назначение |
-|-------|-----|------------|
-| **@Podcast_F** | -1003133850361 | Записи стримов (Recording Bot мониторит) |
-| **@P_FOMO** | -1003534592932 | Уведомления + Voice Chat для слушателей |
-
-### Компоненты:
-
-#### 1. Notification Bot (@Podcast_FOMO_bot)
-- Отправляет уведомления о начале/завершении стримов в @P_FOMO
-- Отправляет личные уведомления пользователям с подключённым Telegram
-- Файл: `/app/backend/services/telegram_service.py`
-
-#### 2. Recording Bot
-- Мониторит канал @Podcast_F каждые 30 секунд
-- Автоматически создаёт подкасты из аудио/видео записей
-- Файл: `/app/backend/telegram_recording_bot.py`
-- Запускается через Supervisor
-
-### Флоу работы:
-
-```
-1. Админ создаёт Live Session на сайте
-        ↓
-2. Нажимает "Start" → уведомление в @P_FOMO
-        ↓
-3. Пользователи видят уведомление и переходят в @P_FOMO
-        ↓
-4. В @P_FOMO запускается Voice Chat
-        ↓
-5. Все слушают стрим в Telegram Voice Chat
-        ↓
-6. Админ нажимает "End" → создаётся подкаст + уведомление
-        ↓
-7. Если запись публикуется в @Podcast_F → Recording Bot обновляет подкаст с аудио
-```
-
----
-
-## 🎙️ Live Streaming
-
-### Создание стрима:
-1. Перейти в `/live-management`
-2. Нажать "Create Live Session"
-3. Ввести Title и Description
-4. Нажать "Start" для запуска
-
-### Для слушателей:
-- На странице Live Room есть баннер **"Listen in Telegram Voice Chat"**
-- Кнопка "Open Telegram" ведёт на `https://t.me/P_FOMO?voicechat`
-
-### Auto Podcast Creation:
-- При завершении стрима автоматически создаётся подкаст
-- Статус: `awaiting_recording` (ожидает аудио файл)
-- Когда Recording Bot найдёт запись → обновит подкаст с аудио
-
----
-
-## 🏠 Home Page Features
-
-### Поиск и фильтрация:
-- Поиск по названию, описанию, тегам
-- Фильтр по тегам (боковая панель)
-- Сортировка: Newest, Oldest, Duration, Popular
-
-### Группировка по тегам:
-- Подкасты группируются по тегам
-- Каждая группа = горизонтальный ряд со скроллом
-- Например: "All Episodes", "Live", "Recording", "Club"
-
-### Статистика наверху:
-- Количество участников
-- Общий XP
-- Количество выступлений
-- Топ 3 участника с аватарами
-
----
-
-## 🎧 Podcast Detail Page
-
-### Структура:
-- **Player** - обложка с кнопкой Play, progress bar
-- **Info** - название, автор, статистика, теги
-- **Actions** - Like, Save, Share
-- **Tabs** - Description, Transcript, AI Summary
-- **Comments** - комментарии с возможностью добавления
-- **Sidebar** - Analytics (Plays, Views, Likes, Comments)
-
-### AI Summary:
-- Генерируется после загрузки аудио и транскрипции
-- Отображается в красивом градиентном блоке
-
----
-
-## 📡 LiveKit Integration
-
-### Что это?
-LiveKit - WebRTC платформа для real-time аудио.
-
-### API Endpoint:
-```
-POST /api/live-sessions/livekit/token
-Body: {
-  "session_id": "uuid",
-  "user_id": "user-id",
-  "username": "Name"
-}
-Response: {
-  "token": "jwt-token",
-  "url": "wss://fomo-bxb0f38x.livekit.cloud",
-  "room": "session-id",
-  "mock_mode": false
-}
-```
-
----
-
-## 👤 Админ панель
-
-### URL: `/admin`
-
-### Функции:
-- Управление кошельками (Owner, Admins)
-- Список участников с XP
-- Настройки клуба
-
----
-
-## 🚀 Запуск
-
-### 1. Backend
+1. **Clone the repository**
 ```bash
-cd /app/backend
+git clone https://github.com/your-org/fomo-voice-club.git
+cd fomo-voice-club
+```
+
+2. **Backend Setup**
+```bash
+cd backend
 pip install -r requirements.txt
-python init_demo_users.py  # Инициализация БД
+cp .env.example .env
+# Edit .env with your credentials
 ```
 
-### 2. Frontend
+3. **Frontend Setup**
 ```bash
-cd /app/frontend
+cd frontend
 yarn install
+cp .env.example .env
 ```
 
-### 3. Сервисы
+4. **Start Services**
 ```bash
-sudo supervisorctl restart all
-sudo supervisorctl status
+# Backend
+uvicorn server:app --host 0.0.0.0 --port 8001
+
+# Frontend
+yarn start
 ```
 
-Все сервисы должны быть RUNNING:
-- backend
-- frontend
-- telegram_recording_bot
+## ⚙️ Configuration
 
----
+### Backend Environment Variables
 
-## 📱 URL Структура
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `MONGO_URL` | MongoDB connection string | ✅ |
+| `DB_NAME` | Database name | ✅ |
+| `JWT_SECRET_KEY` | JWT signing key | ✅ |
+| `TELEGRAM_BOT_TOKEN` | Telegram bot token | ❌ |
+| `LIVEKIT_URL` | LiveKit server URL | ❌ |
+| `LIVEKIT_API_KEY` | LiveKit API key | ❌ |
+| `LIVEKIT_API_SECRET` | LiveKit secret | ❌ |
 
-| URL | Описание |
-|-----|----------|
-| `/` | Главная (подкасты по тегам, поиск, фильтры) |
-| `/live-management` | Управление стримами |
-| `/live/{session_id}` | Live комната |
-| `/podcast/{id}` | Страница подкаста |
-| `/admin` | Админ панель |
-| `/members` | Участники (Leaderboard) |
-| `/progress` | Прогресс XP |
-| `/library` | Библиотека подкастов |
+### Frontend Environment Variables
 
----
+| Variable | Description |
+|----------|-------------|
+| `REACT_APP_BACKEND_URL` | Backend API URL |
 
-## 🔧 Supervisor
+## 📚 Features
 
-Конфигурация Recording Bot: `/etc/supervisor/conf.d/telegram_bot.conf`
-```ini
-[program:telegram_recording_bot]
-command=/root/.venv/bin/python /app/backend/telegram_recording_bot.py
-directory=/app/backend
-autostart=true
-autorestart=true
+### 🎤 Podcasts
+- Upload and stream audio podcasts
+- AI-powered transcription and summaries
+- Tag-based organization
+- Duration and date filtering
+
+### 🔴 Live Streaming
+- Real-time voice rooms via LiveKit
+- Hand raise queue system
+- Live chat with reactions
+- Recording to Telegram channel
+
+### 🏆 Gamification
+- **5 Levels**: Observer → Active → Contributor → Speaker → Core Voice
+- **XP System**: Earn XP for listening, attending, speaking
+- **14 Badges**: Participation, Contribution, Authority categories
+- **Leaderboard**: Top members by XP
+
+### 👥 Club Management
+- Wallet-based roles (Owner, Admin, Member)
+- Private club access control
+- Analytics dashboard
+- Moderation tools
+
+## 🔌 API Endpoints
+
+### Core Endpoints
+```
+GET  /api/                      # API info
+GET  /api/podcasts              # List podcasts
+POST /api/podcasts              # Create podcast
+GET  /api/podcasts/{id}         # Get podcast
+
+GET  /api/live-sessions/sessions  # List live sessions
+POST /api/live-sessions/sessions  # Create session
+GET  /api/live-sessions/{id}      # Join session
+
+GET  /api/xp/{user_id}/progress   # User progress
+GET  /api/users/{user_id}/badges  # User badges
+GET  /api/xp/leaderboard          # XP leaderboard
 ```
 
----
+### Admin Endpoints
+```
+GET  /api/admin/settings        # Club settings
+POST /api/admin/settings        # Update settings
+GET  /api/admin/check-role/{wallet}  # Check user role
+```
 
-## 📝 Демо аккаунты
+## 🧪 Testing
 
-| ID | Role | XP | Level |
-|----|------|-----|-------|
-| demo-owner-001 | Owner | 10,000 | 5 |
-| demo-admin-002 | Admin | 5,000 | 4 |
-| demo-user-003 | Member | 500 | 2 |
+```bash
+# Backend tests
+cd backend
+pytest
 
----
+# Frontend tests
+cd frontend
+yarn test
+```
 
-## 🛠️ Технологии
+## 📝 Contributing
 
-- **Backend**: FastAPI, Python, Motor (MongoDB async)
-- **Frontend**: React, Tailwind CSS, shadcn/ui
-- **Database**: MongoDB
-- **Real-time**: WebSocket, LiveKit (WebRTC)
-- **Telegram**: python-telegram-bot, aiogram
+1. Fork the repository
+2. Create feature branch (`git checkout -b feature/amazing`)
+3. Commit changes (`git commit -m 'Add amazing feature'`)
+4. Push to branch (`git push origin feature/amazing`)
+5. Open Pull Request
 
----
+## 📄 License
 
-*Последнее обновление: 2026-01-03*
+This project is licensed under the MIT License.
+
+## 🙏 Acknowledgments
+
+- [LiveKit](https://livekit.io/) - WebRTC infrastructure
+- [shadcn/ui](https://ui.shadcn.com/) - UI components
+- [FastAPI](https://fastapi.tiangolo.com/) - Backend framework
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
