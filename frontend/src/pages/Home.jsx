@@ -571,42 +571,6 @@ export const Home = () => {
                   </div>
                 </SheetContent>
               </Sheet>
-
-              {/* Sort */}
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger className="w-full sm:w-[200px] h-12 rounded-xl border-gray-200">
-                  <div className="flex items-center gap-2">
-                    <SlidersHorizontal className="w-4 h-4 text-gray-500" />
-                    <SelectValue placeholder="Sort by" />
-                  </div>
-                </SelectTrigger>
-                <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg">
-                  <SelectItem value="newest" className="py-3 px-4 cursor-pointer">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-gray-400" />
-                      Newest First
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="oldest" className="py-3 px-4 cursor-pointer">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-gray-400" />
-                      Oldest First
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="duration" className="py-3 px-4 cursor-pointer">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-gray-400" />
-                      By Duration
-                    </div>
-                  </SelectItem>
-                  <SelectItem value="popular" className="py-3 px-4 cursor-pointer">
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-gray-400" />
-                      Most Popular
-                    </div>
-                  </SelectItem>
-                </SelectContent>
-              </Select>
             </div>
 
             {/* Active filters */}
