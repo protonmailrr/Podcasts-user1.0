@@ -109,43 +109,68 @@ export const Members = () => {
                 data-testid="members-search"
               />
             </div>
-            <select
-              value={roleFilter}
-              onChange={(e) => setRoleFilter(e.target.value)}
-              className="px-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 bg-white"
-              data-testid="members-role-filter"
-            >
-              <option value="all">All Roles</option>
-              <option value="owner">Owner</option>
-              <option value="admin">Admin</option>
-              <option value="moderator">Moderator</option>
-              <option value="speaker">Speaker</option>
-              <option value="member">Member</option>
-              <option value="listener">Listener</option>
-            </select>
-            <select
-              value={levelFilter}
-              onChange={(e) => setLevelFilter(e.target.value)}
-              className="px-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 bg-white"
-              data-testid="members-level-filter"
-            >
-              <option value="all">All Levels</option>
-              <option value="1">L1 Observer</option>
-              <option value="2">L2 Active</option>
-              <option value="3">L3 Contributor</option>
-              <option value="4">L4 Speaker</option>
-              <option value="5">L5 Core Voice</option>
-            </select>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-3 py-2 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-400 bg-white"
-              data-testid="members-sort"
-            >
-              <option value="xp">🏆 Leaderboard (XP)</option>
-              <option value="engagement">Sort by Engagement</option>
-              <option value="level">Sort by Level</option>
-            </select>
+            
+            {/* Role Filter */}
+            <Select value={roleFilter} onValueChange={setRoleFilter}>
+              <SelectTrigger className="w-[140px] h-10 rounded-lg border-gray-200" data-testid="members-role-filter">
+                <SelectValue placeholder="All Roles" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg">
+                <SelectItem value="all" className="py-2.5 px-3 cursor-pointer">
+                  <span className="font-medium">All Roles</span>
+                </SelectItem>
+                <SelectItem value="owner" className="py-2.5 px-3 cursor-pointer">Owner</SelectItem>
+                <SelectItem value="admin" className="py-2.5 px-3 cursor-pointer">Admin</SelectItem>
+                <SelectItem value="moderator" className="py-2.5 px-3 cursor-pointer">Moderator</SelectItem>
+                <SelectItem value="speaker" className="py-2.5 px-3 cursor-pointer">Speaker</SelectItem>
+                <SelectItem value="member" className="py-2.5 px-3 cursor-pointer">Member</SelectItem>
+                <SelectItem value="listener" className="py-2.5 px-3 cursor-pointer">Listener</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            {/* Level Filter */}
+            <Select value={levelFilter} onValueChange={setLevelFilter}>
+              <SelectTrigger className="w-[140px] h-10 rounded-lg border-gray-200" data-testid="members-level-filter">
+                <SelectValue placeholder="All Levels" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg">
+                <SelectItem value="all" className="py-2.5 px-3 cursor-pointer">
+                  <span className="font-medium">All Levels</span>
+                </SelectItem>
+                <SelectItem value="1" className="py-2.5 px-3 cursor-pointer">L1 Observer</SelectItem>
+                <SelectItem value="2" className="py-2.5 px-3 cursor-pointer">L2 Active</SelectItem>
+                <SelectItem value="3" className="py-2.5 px-3 cursor-pointer">L3 Contributor</SelectItem>
+                <SelectItem value="4" className="py-2.5 px-3 cursor-pointer">L4 Speaker</SelectItem>
+                <SelectItem value="5" className="py-2.5 px-3 cursor-pointer">L5 Core Voice</SelectItem>
+              </SelectContent>
+            </Select>
+            
+            {/* Sort By */}
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-[200px] h-10 rounded-lg border-gray-200" data-testid="members-sort">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent className="bg-white border border-gray-200 rounded-xl shadow-lg">
+                <SelectItem value="xp" className="py-2.5 px-3 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <Trophy className="w-4 h-4 text-yellow-500" />
+                    Leaderboard (XP)
+                  </div>
+                </SelectItem>
+                <SelectItem value="engagement" className="py-2.5 px-3 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="w-4 h-4 text-gray-400" />
+                    Sort by Engagement
+                  </div>
+                </SelectItem>
+                <SelectItem value="level" className="py-2.5 px-3 cursor-pointer">
+                  <div className="flex items-center gap-2">
+                    <Layers className="w-4 h-4 text-gray-400" />
+                    Sort by Level
+                  </div>
+                </SelectItem>
+              </SelectContent>
+            </Select>
           </div>
         </div>
 
