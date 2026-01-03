@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TrendingUp, Award, Clock, Mic, ThumbsUp, Zap } from 'lucide-react';
+import { TrendingUp, Award, Clock, Mic, ThumbsUp, Zap, Star, Users, CheckCircle, Shield, Lightbulb, Handshake, Radio, Timer, Hand, Heart } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useWallet } from '../context/WalletContext';
 
