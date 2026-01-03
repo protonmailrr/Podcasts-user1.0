@@ -6,16 +6,55 @@ import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '../components/ui/avatar';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../components/ui/tooltip';
 import { usePlayer } from '../components/GlobalPlayer';
 import { useWallet } from '../context/WalletContext';
 import { toast } from 'sonner';
 import { 
   Play, Pause, Heart, Share2, Bookmark, BookmarkCheck, Loader2, Eye, Calendar,
   MessageCircle, UserPlus, Clock, Headphones, Sparkles, ChevronLeft, 
-  SkipBack, SkipForward, Volume2
+  SkipBack, SkipForward, Volume2, HelpCircle
 } from 'lucide-react';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Info Tooltip Component for Podcast tabs
+const TabInfoTooltip = ({ title, description, formula, status }) => (
+  <TooltipProvider delayDuration={100}>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button className="ml-1 text-gray-400 hover:text-gray-600 transition-colors">
+          <HelpCircle className="w-3.5 h-3.5" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent 
+        side="top" 
+        className="bg-gray-900 text-white p-4 rounded-xl max-w-xs shadow-xl border-0"
+      >
+        <div className="space-y-2">
+          <h4 className="font-semibold text-white text-sm">{title}</h4>
+          <p className="text-gray-300 text-xs leading-relaxed">{description}</p>
+          {formula && (
+            <div className="bg-gray-800 rounded-lg p-2 mt-2">
+              <p className="text-xs text-gray-400 font-mono">{formula}</p>
+            </div>
+          )}
+          {status && (
+            <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gray-700">
+              <div className={`w-2 h-2 rounded-full ${status.active ? 'bg-emerald-500' : 'bg-gray-500'}`} />
+              <span className="text-xs text-gray-400">{status.text}</span>
+            </div>
+          )}
+        </div>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
 export const PodcastDetail = () => {
   const { podcastId } = useParams();
