@@ -51,3 +51,4 @@ htmlcov/
 *.bak
 *.tmp
 frontend/node_modules/.cache/default-development/5.pack
+frontend/node_modules/.cache/default-development/1.pack
