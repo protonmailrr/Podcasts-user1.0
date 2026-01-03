@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Users, Search, ChevronRight, Trophy, Award } from 'lucide-react';
+import { Users, Search, ChevronRight, Trophy, Award, TrendingUp, Layers } from 'lucide-react';
 import axios from 'axios';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../components/ui/select';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
