@@ -3,12 +3,13 @@ import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
 import { 
   Loader2, Users, Radio, Play, Mic, ChevronRight, ChevronLeft, X, 
-  Search, SlidersHorizontal, Filter, Clock, Award, Zap, MessageSquare
+  Search, SlidersHorizontal, Filter, Clock, Award, Zap, MessageSquare, Calendar
 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card } from '../components/ui/card';
 import { Badge } from '../components/ui/badge';
+import { Slider } from '../components/ui/slider';
 import { PodcastCard } from '../components/PodcastCard';
 import {
   Select,
@@ -26,6 +27,16 @@ import {
 } from '../components/ui/sheet';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Format duration helper
+const formatDuration = (seconds) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  if (hours > 0) {
+    return `${hours}h ${minutes}m`;
+  }
+  return `${minutes}m`;
+};
 
 // Horizontal Scroll Row Component
 const HorizontalScrollRow = ({ title, tag, podcasts, onPodcastClick }) => {
