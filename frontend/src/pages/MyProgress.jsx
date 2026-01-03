@@ -178,76 +178,52 @@ export const MyProgress = () => {
         {badges && badges.total_badges > 0 && (
           <div className="bg-white border border-gray-200 rounded-lg">
             <div className="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Award className="w-4 h-4 text-gray-500" />
-                <h3 className="font-semibold text-gray-900">Badges</h3>
-              </div>
+              <h3 className="font-semibold text-gray-900">Badges</h3>
               <span className="text-sm text-gray-500">{badges.total_badges} earned</span>
             </div>
             
-            <div className="p-4 space-y-4">
-              {/* Participation Badges */}
-              {badges.badges.participation?.length > 0 && (
-                <div>
-                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
-                    Participation
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {badges.badges.participation.map((badge, idx) => (
-                      <div
-                        key={`participation-${idx}`}
-                        className="inline-flex items-center gap-2 px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg cursor-help"
-                        title={badge.description}
-                      >
-                        <span className="text-lg">{badge.icon || '🏅'}</span>
-                        <span className="text-sm font-medium text-blue-700">{badge.name}</span>
+            <div className="divide-y divide-gray-50">
+              {badges.all_badges?.map((badge, idx) => {
+                // Map badge keys to Lucide icons
+                const getIcon = (key) => {
+                  const iconMap = {
+                    'early_member': Star,
+                    'first_speaker': Mic,
+                    'first_time_speaker': Mic,
+                    '10_sessions': Radio,
+                    '10_sessions_attended': Radio,
+                    '100_hours': Timer,
+                    'active_raiser': Hand,
+                    'active_hand_raiser': Hand,
+                    'supporter': Heart,
+                    'community_supporter': Heart,
+                    'insightful_speaker': Lightbulb,
+                    'community_helper': Handshake,
+                    'moderator_trusted': Shield,
+                    'signal_provider': Radio,
+                    'core_member': Star,
+                    'verified_expert': CheckCircle,
+                    'club_council': Users,
+                    'long_term_holder': Award
+                  };
+                  return iconMap[key] || Award;
+                };
+                
+                const IconComponent = getIcon(badge.key);
+                
+                return (
+                  <div key={idx} className="flex items-center justify-between px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <IconComponent className="w-4 h-4 text-gray-400" />
+                      <div>
+                        <span className="text-sm text-gray-700">{badge.name}</span>
+                        <span className="text-xs text-gray-400 ml-2">• {badge.type}</span>
                       </div>
-                    ))}
+                    </div>
+                    <span className="text-xs text-gray-400">{badge.description}</span>
                   </div>
-                </div>
-              )}
-              
-              {/* Contribution Badges */}
-              {badges.badges.contribution?.length > 0 && (
-                <div>
-                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
-                    Contribution
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {badges.badges.contribution.map((badge, idx) => (
-                      <div
-                        key={`contribution-${idx}`}
-                        className="inline-flex items-center gap-2 px-3 py-2 bg-green-50 border border-green-200 rounded-lg cursor-help"
-                        title={badge.description}
-                      >
-                        <span className="text-lg">{badge.icon || '🏅'}</span>
-                        <span className="text-sm font-medium text-green-700">{badge.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-              
-              {/* Authority Badges */}
-              {badges.badges.authority?.length > 0 && (
-                <div>
-                  <div className="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">
-                    Authority
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    {badges.badges.authority.map((badge, idx) => (
-                      <div
-                        key={`authority-${idx}`}
-                        className="inline-flex items-center gap-2 px-3 py-2 bg-purple-50 border border-purple-200 rounded-lg cursor-help"
-                        title={badge.description}
-                      >
-                        <span className="text-lg">{badge.icon || '🏅'}</span>
-                        <span className="text-sm font-medium text-purple-700">{badge.name}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
+                );
+              })}
             </div>
           </div>
         )}
