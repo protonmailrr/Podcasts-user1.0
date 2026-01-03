@@ -420,12 +420,14 @@ export const Home = () => {
                 <SheetTrigger asChild>
                   <Button 
                     variant="outline" 
-                    className={`h-12 px-4 rounded-xl ${selectedTags.length > 0 ? 'border-emerald-500 text-emerald-600' : ''}`}
+                    className={`h-12 px-4 rounded-xl ${hasActiveFilters ? 'border-emerald-500 text-emerald-600' : ''}`}
                   >
                     <Filter className="w-5 h-5 mr-2" />
                     Filters
-                    {selectedTags.length > 0 && (
-                      <Badge className="ml-2 bg-emerald-500">{selectedTags.length}</Badge>
+                    {hasActiveFilters && (
+                      <Badge className="ml-2 bg-emerald-500">
+                        {selectedTags.length + (minDuration > 0 || maxDuration < 7200 ? 1 : 0) + (dateFrom || dateTo ? 1 : 0)}
+                      </Badge>
                     )}
                   </Button>
                 </SheetTrigger>
@@ -443,6 +445,34 @@ export const Home = () => {
                   </SheetHeader>
                   
                   <div className="mt-6 space-y-6">
+                    {/* Sort By */}
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-3">Sort By</h4>
+                      <div className="flex gap-2">
+                        <Select value={sortBy} onValueChange={setSortBy}>
+                          <SelectTrigger className="flex-1">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="created_at">Newest</SelectItem>
+                            <SelectItem value="listens_count">Most Listened</SelectItem>
+                            <SelectItem value="views_count">Most Viewed</SelectItem>
+                            <SelectItem value="likes_count">Most Liked</SelectItem>
+                            <SelectItem value="duration">Duration</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        <Select value={sortOrder} onValueChange={setSortOrder}>
+                          <SelectTrigger className="w-32">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="desc">Descending</SelectItem>
+                            <SelectItem value="asc">Ascending</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
+
                     {/* Tags */}
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-3">Tags</h4>
@@ -460,6 +490,72 @@ export const Home = () => {
                             {tag.charAt(0).toUpperCase() + tag.slice(1)}
                           </button>
                         ))}
+                      </div>
+                    </div>
+
+                    {/* Duration */}
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-3">
+                        Duration: {formatDuration(minDuration)} - {formatDuration(maxDuration)}
+                      </h4>
+                      <div className="px-2">
+                        <Slider
+                          value={[minDuration, maxDuration]}
+                          onValueChange={([min, max]) => {
+                            setMinDuration(min);
+                            setMaxDuration(max);
+                          }}
+                          min={0}
+                          max={7200}
+                          step={300}
+                          className="my-4"
+                        />
+                      </div>
+                      <div className="flex gap-2 mt-2">
+                        {[
+                          { label: '< 15m', min: 0, max: 900 },
+                          { label: '15-30m', min: 900, max: 1800 },
+                          { label: '30-60m', min: 1800, max: 3600 },
+                          { label: '> 60m', min: 3600, max: 7200 }
+                        ].map((preset) => (
+                          <Button
+                            key={preset.label}
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={() => {
+                              setMinDuration(preset.min);
+                              setMaxDuration(preset.max);
+                            }}
+                            className={
+                              minDuration === preset.min && maxDuration === preset.max
+                                ? 'border-emerald-500 text-emerald-600'
+                                : ''
+                            }
+                          >
+                            {preset.label}
+                          </Button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Date Range */}
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-3">Date Range</h4>
+                      <div className="flex gap-2 items-center">
+                        <Input
+                          type="date"
+                          value={dateFrom}
+                          onChange={(e) => setDateFrom(e.target.value)}
+                          className="flex-1"
+                        />
+                        <span className="text-gray-400">to</span>
+                        <Input
+                          type="date"
+                          value={dateTo}
+                          onChange={(e) => setDateTo(e.target.value)}
+                          className="flex-1"
+                        />
                       </div>
                     </div>
 
