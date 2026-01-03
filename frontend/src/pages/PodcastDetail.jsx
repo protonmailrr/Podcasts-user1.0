@@ -448,20 +448,43 @@ export const PodcastDetail = () => {
                       value="description" 
                       className="flex-1 py-4 rounded-none border-b-2 border-transparent data-[state=active]:border-emerald-500 data-[state=active]:bg-transparent"
                     >
-                      Description
+                      <span className="flex items-center">
+                        Description
+                        <TabInfoTooltip
+                          title="Description"
+                          description="Описание подкаста, добавленное автором. Содержит краткую информацию о теме и содержании выпуска."
+                          status={{ active: !!podcast?.description, text: podcast?.description ? 'Описание доступно' : 'Описание отсутствует' }}
+                        />
+                      </span>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="transcript"
                       className="flex-1 py-4 rounded-none border-b-2 border-transparent data-[state=active]:border-emerald-500 data-[state=active]:bg-transparent"
                     >
-                      Transcript
+                      <span className="flex items-center">
+                        Transcript
+                        <TabInfoTooltip
+                          title="Transcript"
+                          description="Полная текстовая расшифровка аудио подкаста. Генерируется автоматически с помощью AI после загрузки аудио."
+                          formula="Audio → Speech-to-Text AI → Transcript"
+                          status={{ active: !!podcast?.transcript, text: podcast?.transcript ? 'Транскрипт готов' : 'Ожидает генерации' }}
+                        />
+                      </span>
                     </TabsTrigger>
                     <TabsTrigger 
                       value="ai"
                       className="flex-1 py-4 rounded-none border-b-2 border-transparent data-[state=active]:border-emerald-500 data-[state=active]:bg-transparent"
                     >
-                      <Sparkles className="w-4 h-4 mr-1" />
-                      AI Summary
+                      <span className="flex items-center">
+                        <Sparkles className="w-4 h-4 mr-1" />
+                        AI Summary
+                        <TabInfoTooltip
+                          title="AI Summary"
+                          description="Краткое содержание подкаста, сгенерированное искусственным интеллектом на основе транскрипта. Выделяет ключевые темы и идеи."
+                          formula="Transcript → LLM Analysis → Summary"
+                          status={{ active: !!podcast?.ai_summary, text: podcast?.ai_summary ? 'AI Summary готов' : 'Ожидает анализа' }}
+                        />
+                      </span>
                     </TabsTrigger>
                   </TabsList>
                 </div>
