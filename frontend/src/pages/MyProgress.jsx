@@ -136,9 +136,9 @@ export const MyProgress = () => {
             <h1 className="text-2xl font-semibold text-gray-900">My Progress</h1>
             <InfoTooltip
               title="My Progress"
-              description="Отслеживайте свой путь в клубе. Уровень и XP определяют ваш статус и приоритет в очереди на выступление."
+              description="Track your journey in the club. Level and XP determine your status and priority in the speaking queue."
               formula="Level = f(Total XP)"
-              status={{ active: true, text: 'Автоматически обновляется' }}
+              status={{ active: true, text: 'Updates automatically' }}
             />
           </div>
           <p className="text-sm text-gray-500">Track your journey in the club</p>
