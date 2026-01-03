@@ -210,10 +210,15 @@ export const Home = () => {
     return Array.from(tags).sort();
   }, [podcasts]);
 
+  // Check if filters are active
+  const hasActiveFilters = searchQuery || selectedTags.length > 0 || 
+    minDuration > 0 || maxDuration < 7200 || dateFrom || dateTo;
+
   // Filter podcasts
   const filteredPodcasts = useMemo(() => {
     let result = [...podcasts];
     
+    // Search filter
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       result = result.filter(p => 
@@ -223,30 +228,59 @@ export const Home = () => {
       );
     }
 
+    // Tags filter
     if (selectedTags.length > 0) {
       result = result.filter(p => 
         p.tags?.some(tag => selectedTags.includes(tag))
       );
     }
     
-    switch (sortBy) {
-      case 'oldest':
-        result.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-        break;
-      case 'duration':
-        result.sort((a, b) => (b.duration || 0) - (a.duration || 0));
-        break;
-      case 'popular':
-        result.sort((a, b) => ((b.views_count || b.listens || 0) - (a.views_count || a.listens || 0)));
-        break;
-      case 'newest':
-      default:
-        result.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-        break;
+    // Duration filter
+    if (minDuration > 0 || maxDuration < 7200) {
+      result = result.filter(p => {
+        const dur = p.duration || 0;
+        return dur >= minDuration && dur <= maxDuration;
+      });
     }
     
+    // Date filter
+    if (dateFrom) {
+      const from = new Date(dateFrom);
+      result = result.filter(p => new Date(p.created_at) >= from);
+    }
+    if (dateTo) {
+      const to = new Date(dateTo);
+      to.setHours(23, 59, 59);
+      result = result.filter(p => new Date(p.created_at) <= to);
+    }
+    
+    // Sorting
+    result.sort((a, b) => {
+      let comparison = 0;
+      switch (sortBy) {
+        case 'duration':
+          comparison = (a.duration || 0) - (b.duration || 0);
+          break;
+        case 'listens_count':
+        case 'popular':
+          comparison = (a.views_count || a.listens || 0) - (b.views_count || b.listens || 0);
+          break;
+        case 'views_count':
+          comparison = (a.views_count || 0) - (b.views_count || 0);
+          break;
+        case 'likes_count':
+          comparison = (a.likes_count || 0) - (b.likes_count || 0);
+          break;
+        case 'created_at':
+        default:
+          comparison = new Date(a.created_at) - new Date(b.created_at);
+          break;
+      }
+      return sortOrder === 'desc' ? -comparison : comparison;
+    });
+    
     return result;
-  }, [podcasts, searchQuery, sortBy, selectedTags]);
+  }, [podcasts, searchQuery, sortBy, sortOrder, selectedTags, minDuration, maxDuration, dateFrom, dateTo]);
 
   // Group podcasts by tags
   const podcastsByTag = useMemo(() => {
