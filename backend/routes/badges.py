@@ -314,10 +314,23 @@ async def award_badge_manual(
 async def get_user_badges(user_id: str):
     """
     Get all badges for a user
+    Auto-creates user if not found
     """
     user = await db.users.find_one({"id": user_id})
+    
+    # If user not found, return empty badges (user will be created by /xp/progress endpoint)
     if not user:
-        raise HTTPException(status_code=404, detail="User not found")
+        return {
+            "user_id": user_id,
+            "user_name": f"User {user_id[:8]}",
+            "total_badges": 0,
+            "badges": {
+                "participation": [],
+                "contribution": [],
+                "authority": []
+            },
+            "all_badges": []
+        }
     
     raw_badges = user.get('badges', [])
     
