@@ -313,10 +313,13 @@ export const Home = () => {
   const clearFilters = () => {
     setSearchQuery('');
     setSelectedTags([]);
-    setSortBy('newest');
+    setSortBy('created_at');
+    setSortOrder('desc');
+    setMinDuration(0);
+    setMaxDuration(7200);
+    setDateFrom('');
+    setDateTo('');
   };
-
-  const hasActiveFilters = searchQuery || selectedTags.length > 0;
 
   if (loading) {
     return (
