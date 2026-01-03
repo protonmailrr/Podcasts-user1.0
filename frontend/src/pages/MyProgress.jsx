@@ -1,10 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { TrendingUp, Award, Clock, Mic, ThumbsUp, Zap, Star, Users, CheckCircle, Shield, Lightbulb, Handshake, Radio, Timer, Hand, Heart } from 'lucide-react';
+import { TrendingUp, Award, Clock, Mic, ThumbsUp, Zap, Star, Users, CheckCircle, Shield, Lightbulb, Handshake, Radio, Timer, Hand, Heart, HelpCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useWallet } from '../context/WalletContext';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../components/ui/tooltip';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
+
+// Info Tooltip Component
+const InfoTooltip = ({ title, description, formula, status }) => (
+  <TooltipProvider delayDuration={100}>
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <button className="ml-2 text-gray-400 hover:text-gray-600 transition-colors">
+          <HelpCircle className="w-4 h-4" />
+        </button>
+      </TooltipTrigger>
+      <TooltipContent 
+        side="top" 
+        className="bg-gray-900 text-white p-4 rounded-xl max-w-xs shadow-xl border-0"
+      >
+        <div className="space-y-2">
+          <h4 className="font-semibold text-white text-sm">{title}</h4>
+          <p className="text-gray-300 text-xs leading-relaxed">{description}</p>
+          {formula && (
+            <div className="bg-gray-800 rounded-lg p-2 mt-2">
+              <p className="text-xs text-gray-400 font-mono">{formula}</p>
+            </div>
+          )}
+          {status && (
+            <div className="flex items-center gap-2 mt-2 pt-2 border-t border-gray-700">
+              <div className={`w-2 h-2 rounded-full ${status.active ? 'bg-emerald-500' : 'bg-gray-500'}`} />
+              <span className="text-xs text-gray-400">{status.text}</span>
+            </div>
+          )}
+        </div>
+      </TooltipContent>
+    </Tooltip>
+  </TooltipProvider>
+);
 
 export const MyProgress = () => {
   const { user } = useAuth();
