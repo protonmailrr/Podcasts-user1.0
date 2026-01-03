@@ -200,8 +200,14 @@ export const MyProgress = () => {
 
         {/* XP Breakdown */}
         <div className="bg-white border border-gray-200 rounded-lg mb-6">
-          <div className="px-4 py-3 border-b border-gray-100">
+          <div className="px-4 py-3 border-b border-gray-100 flex items-center">
             <h3 className="font-semibold text-gray-900">XP Breakdown</h3>
+            <InfoTooltip
+              title="XP Breakdown"
+              description="Детализация источников вашего опыта. XP начисляется за различные активности в клубе."
+              formula="Total XP = Listening + Attendance + Raises + Speeches + Support"
+              status={{ active: true, text: 'XP начисляется автоматически' }}
+            />
           </div>
           <div className="divide-y divide-gray-50">
             {[
