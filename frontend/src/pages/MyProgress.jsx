@@ -91,7 +91,7 @@ export const MyProgress = () => {
         setBadges(badgesRes.data);
         setLoading(false);
       } catch (err2) {
-        setError('Не удалось загрузить прогресс. Подключите кошелёк.');
+        setError('Could not load progress. Please connect your wallet.');
         setLoading(false);
       }
     }
