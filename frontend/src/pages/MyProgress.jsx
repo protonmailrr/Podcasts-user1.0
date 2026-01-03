@@ -240,9 +240,9 @@ export const MyProgress = () => {
                 <h3 className="font-semibold text-gray-900">Badges</h3>
                 <InfoTooltip
                   title="Badges"
-                  description="Достижения за активность в клубе. Бейджи выдаются автоматически при достижении определённых условий или вручную администратором."
-                  formula="3 категории: Participation, Contribution, Authority"
-                  status={{ active: true, text: `${badges.total_badges} из 14 получено` }}
+                  description="Achievements for activity in the club. Badges are awarded automatically when certain conditions are met or manually by an administrator."
+                  formula="3 categories: Participation, Contribution, Authority"
+                  status={{ active: true, text: `${badges.total_badges} of 14 earned` }}
                 />
               </div>
               <span className="text-sm text-gray-500">{badges.total_badges} earned</span>
