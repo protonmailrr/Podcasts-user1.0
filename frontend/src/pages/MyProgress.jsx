@@ -132,7 +132,15 @@ export const MyProgress = () => {
       <div className="max-w-4xl mx-auto px-4 py-8">
         {/* Header */}
         <div className="mb-6">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-1">My Progress</h1>
+          <div className="flex items-center">
+            <h1 className="text-2xl font-semibold text-gray-900">My Progress</h1>
+            <InfoTooltip
+              title="My Progress"
+              description="Отслеживайте свой путь в клубе. Уровень и XP определяют ваш статус и приоритет в очереди на выступление."
+              formula="Level = f(Total XP)"
+              status={{ active: true, text: 'Автоматически обновляется' }}
+            />
+          </div>
           <p className="text-sm text-gray-500">Track your journey in the club</p>
         </div>
 
