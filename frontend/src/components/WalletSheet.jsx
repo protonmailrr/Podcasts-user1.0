@@ -291,21 +291,6 @@ export const WalletSheet = () => {
                 <ChevronRight className="w-4 h-4 text-gray-400" />
               </button>
 
-              {/* Private Club */}
-              <button
-                onClick={() => handleNavigate('/library?tab=private-access')}
-                className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors text-left"
-              >
-                <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
-                  <Lock className="w-5 h-5 text-purple-500" />
-                </div>
-                <div className="flex-1">
-                  <p className="text-sm font-medium text-gray-900">Private Club</p>
-                  <p className="text-xs text-gray-500">Exclusive content</p>
-                </div>
-                <ChevronRight className="w-4 h-4 text-gray-400" />
-              </button>
-
               {/* Messages */}
               <button
                 onClick={() => handleNavigate('/social?tab=messages')}
