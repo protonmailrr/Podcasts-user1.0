@@ -16,13 +16,13 @@ export const MyProgress = () => {
 
   // Get current user ID based on test mode or actual user
   const testMode = localStorage.getItem('testMode') || 'user';
-  const testUserId = testMode === 'admin' ? 'demo-admin-002' : 'demo-user-003';
+  const testUserId = testMode === 'owner' ? 'demo-owner-001' : 
+                     testMode === 'admin' ? 'demo-admin-002' : 'demo-user-003';
   
   const possibleUserIds = [
     user?.id,
     walletAddress,
-    testUserId,
-    'demo-owner-001'
+    testUserId
   ].filter(Boolean);
 
   useEffect(() => {
