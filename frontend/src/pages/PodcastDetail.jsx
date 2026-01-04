@@ -14,6 +14,7 @@ import {
 } from '../components/ui/tooltip';
 import { usePlayer } from '../components/GlobalPlayer';
 import { useWallet } from '../context/WalletContext';
+import { CommentsSection } from '../components/CommentsSection';
 import { toast } from 'sonner';
 import { 
   Play, Pause, Heart, Share2, Bookmark, BookmarkCheck, Loader2, Eye, Calendar,
