@@ -62,23 +62,6 @@ export const Library = () => {
           const playlistRes = await axios.get(`${API}/users/${userId}/playlists`);
           setPlaylists(playlistRes.data);
           break;
-        case 'private-access':
-          try {
-            const response = await axios.get(`${API}/podcasts`, { params: { visibility: 'private', limit: 100 } });
-            const accessiblePodcasts = [];
-            for (const podcast of response.data) {
-              try {
-                const accessCheck = await axios.get(`${API}/podcasts/${podcast.id}/access/check?user_id=${userId}`);
-                if (accessCheck.data.has_access && !accessCheck.data.is_author) {
-                  accessiblePodcasts.push(podcast);
-                }
-              } catch {}
-            }
-            setPrivateAccessPodcasts(accessiblePodcasts);
-          } catch {
-            setPrivateAccessPodcasts([]);
-          }
-          break;
         default:
           break;
       }
