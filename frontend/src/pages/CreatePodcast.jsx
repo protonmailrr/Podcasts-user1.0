@@ -138,6 +138,7 @@ export const CreatePodcast = () => {
         title: formData.title,
         description: formData.description || 'Live broadcast',
         author_id: authorId,
+        category: formData.category || null,
         tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
         cover_image: formData.cover_image || 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?w=500',
         is_live: true,
