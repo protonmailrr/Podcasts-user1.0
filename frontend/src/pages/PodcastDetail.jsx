@@ -64,13 +64,11 @@ export const PodcastDetail = () => {
   const { playPodcast, currentPodcast, isPlaying, togglePlay, currentTime, duration, seekTo, skip } = usePlayer();
   
   const [podcast, setPodcast] = useState(null);
-  const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
   const [author, setAuthor] = useState(null);
   const [isFollowing, setIsFollowing] = useState(false);
   const [isSaved, setIsSaved] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
-  const [newComment, setNewComment] = useState('');
   const [activeTab, setActiveTab] = useState('description');
   
   const currentUserId = walletAddress || 'demo-user-123';
@@ -84,13 +82,9 @@ export const PodcastDetail = () => {
   const fetchPodcastData = async () => {
     try {
       setLoading(true);
-      const [podcastRes, commentsRes] = await Promise.all([
-        axios.get(`${API}/podcasts/${podcastId}`),
-        axios.get(`${API}/podcasts/${podcastId}/comments`).catch(() => ({ data: [] }))
-      ]);
+      const podcastRes = await axios.get(`${API}/podcasts/${podcastId}`);
       
       setPodcast(podcastRes.data);
-      setComments(commentsRes.data || []);
       
       // Fetch author
       if (podcastRes.data.author_id) {
