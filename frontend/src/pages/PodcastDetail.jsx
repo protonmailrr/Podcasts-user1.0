@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, lazy, Suspense } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Card } from '../components/ui/card';
@@ -14,13 +14,15 @@ import {
 } from '../components/ui/tooltip';
 import { usePlayer } from '../components/GlobalPlayer';
 import { useWallet } from '../context/WalletContext';
-import { CommentsSection } from '../components/CommentsSection';
 import { toast } from 'sonner';
 import { 
   Play, Pause, Heart, Share2, Bookmark, BookmarkCheck, Loader2, Eye, Calendar,
   MessageCircle, UserPlus, Clock, Headphones, Sparkles, ChevronLeft, 
   SkipBack, SkipForward, Volume2, HelpCircle
 } from 'lucide-react';
+
+// Lazy load CommentsSection to avoid bundle issues
+const CommentsSection = lazy(() => import('../components/CommentsSection').then(m => ({ default: m.CommentsSection })));
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
