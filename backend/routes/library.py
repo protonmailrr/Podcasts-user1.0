@@ -79,19 +79,25 @@ async def get_saved_podcasts(user_id: str):
     """Get all saved podcasts for a user"""
     db = await get_db()
     
+    # First check saved_podcasts collection (legacy)
     saved = await db.saved_podcasts.find(
         {"user_id": user_id},
         {"_id": 0}
     ).sort("saved_at", -1).to_list(1000)
     
-    if not saved:
-        return []
+    if saved:
+        podcast_ids = [s["podcast_id"] for s in saved]
+        podcasts = await db.podcasts.find(
+            {"id": {"$in": podcast_ids}},
+            {"_id": 0}
+        ).to_list(1000)
+        return podcasts
     
-    podcast_ids = [s["podcast_id"] for s in saved]
+    # Also check podcasts where user_id is in saves array (new method)
     podcasts = await db.podcasts.find(
-        {"id": {"$in": podcast_ids}},
+        {"saves": user_id},
         {"_id": 0}
-    ).to_list(1000)
+    ).sort("created_at", -1).to_list(1000)
     
     return podcasts
 
@@ -101,7 +107,21 @@ async def get_liked_podcasts(user_id: str):
     """Get all liked podcasts for a user"""
     db = await get_db()
     
-    # Find podcasts where user_id is in likes array
+    # First check liked_podcasts collection (if exists)
+    liked = await db.liked_podcasts.find(
+        {"user_id": user_id},
+        {"_id": 0}
+    ).sort("liked_at", -1).to_list(1000)
+    
+    if liked:
+        podcast_ids = [l["podcast_id"] for l in liked]
+        podcasts = await db.podcasts.find(
+            {"id": {"$in": podcast_ids}},
+            {"_id": 0}
+        ).to_list(1000)
+        return podcasts
+    
+    # Also check podcasts where user_id is in likes array
     podcasts = await db.podcasts.find(
         {"likes": user_id},
         {"_id": 0}
