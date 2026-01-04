@@ -404,7 +404,11 @@ async def get_podcast_reactions(podcast_id: str):
             reactions[r["_id"]] = r["count"]
     
     # Also add legacy likes count
-    reactions["like"] += len(podcast.get("likes", []))
+    likes = podcast.get("likes", [])
+    if isinstance(likes, list):
+        reactions["like"] += len(likes)
+    elif isinstance(likes, int):
+        reactions["like"] += likes
     
     return {
         "podcast_id": podcast_id,
