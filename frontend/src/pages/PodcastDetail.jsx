@@ -473,6 +473,49 @@ export const PodcastDetail = () => {
               </div>
             </Card>
 
+            {/* Description Block */}
+            <Card className="bg-white border border-gray-200 rounded-2xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-sm font-semibold text-gray-900">Description</h3>
+                <TabInfoTooltip 
+                  title="Description"
+                  description="Author's overview and summary of the podcast content, topics covered, and key takeaways."
+                />
+              </div>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                {podcast.description || 'No description available.'}
+              </p>
+            </Card>
+
+            {/* Transcript Block */}
+            <Card className="bg-white border border-gray-200 rounded-2xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-sm font-semibold text-gray-900">Transcript</h3>
+                <TabInfoTooltip 
+                  title="Transcript"
+                  description="Full text transcription of the podcast audio, generated automatically or provided by the author."
+                />
+              </div>
+              <p className="text-sm text-gray-500 italic">
+                {podcast.transcript || 'Transcript not available yet.'}
+              </p>
+            </Card>
+
+            {/* AI Summary Block */}
+            <Card className="bg-white border border-gray-200 rounded-2xl p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="w-4 h-4 text-purple-500" />
+                <h3 className="text-sm font-semibold text-gray-900">AI Summary</h3>
+                <TabInfoTooltip 
+                  title="AI Summary"
+                  description="AI-generated summary highlighting the main points, key insights, and notable moments from the podcast."
+                />
+              </div>
+              <p className="text-sm text-gray-500 italic">
+                {podcast.ai_summary || 'AI summary not available yet.'}
+              </p>
+            </Card>
+
             {/* Author Card */}
             {author && (
               <Card className="bg-white border border-gray-200 rounded-2xl p-6">
