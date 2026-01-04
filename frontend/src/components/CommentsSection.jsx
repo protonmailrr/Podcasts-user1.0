@@ -75,7 +75,8 @@ const EmojiPicker = ({ onSelect, onClose }) => {
   return past.toLocaleDateString();
 };
 
-// Single Comment Component
+// Format relative time
+const formatTime = (date) => {
 const Comment = ({ 
   comment, 
   currentUserId, 
