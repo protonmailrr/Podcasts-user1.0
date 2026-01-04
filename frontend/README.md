@@ -1,70 +1,158 @@
-# Getting Started with Create React App
+# FOMO Voice Club - Frontend
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React-приложение для платформы FOMO Voice Club.
 
-## Available Scripts
+## 🛠️ Технологии
 
-In the project directory, you can run:
+- **React 18** - UI фреймворк
+- **Tailwind CSS** - стилизация
+- **shadcn/ui** - UI компоненты
+- **React Router** - маршрутизация
+- **Axios** - HTTP запросы
+- **Zustand** - управление состоянием
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 📁 Структура
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```
+src/
+├── components/
+│   ├── ui/                 # shadcn/ui компоненты
+│   │   ├── button.jsx
+│   │   ├── card.jsx
+│   │   ├── input.jsx
+│   │   ├── tabs.jsx
+│   │   ├── select.jsx
+│   │   ├── slider.jsx
+│   │   ├── sheet.jsx
+│   │   ├── tooltip.jsx
+│   │   └── ...
+│   ├── library/            # Компоненты библиотеки
+│   │   ├── LibraryPodcastCard.jsx
+│   │   ├── LibraryPlaylistCard.jsx
+│   │   └── ...
+│   ├── CommentsSection.jsx  # Система комментариев
+│   ├── GlobalPlayer.jsx    # Глобальный аудио плеер
+│   ├── Navigation.jsx      # Навигация
+│   ├── PodcastCard.jsx     # Карточка подкаста
+│   └── WalletSheet.jsx     # Панель кошелька
+│
+├── pages/
+│   ├── Home.jsx            # Главная страница
+│   ├── PodcastDetail.jsx   # Страница подкаста
+│   ├── Library.jsx         # Личная библиотека
+│   ├── MyProgress.jsx      # Прогресс пользователя
+│   ├── CreatePodcast.jsx   # Создание подкаста
+│   ├── Members.jsx         # Участники клуба
+│   ├── Admin.jsx           # Админ-панель
+│   └── ...
+│
+├── context/
+│   ├── WalletContext.jsx   # Контекст кошелька
+│   └── AuthContext.jsx     # Контекст аутентификации
+│
+├── utils/                  # Вспомогательные функции
+├── App.js                  # Главный компонент
+└── index.js                # Точка входа
+```
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Запуск
 
-### `npm run build`
+```bash
+# Установка зависимостей
+yarn install
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+# Разработка
+yarn start
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+# Сборка
+yarn build
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Тесты
+yarn test
+```
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 📄 Страницы
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Home.jsx
+- Каталог подкастов с горизонтальной прокруткой
+- Поиск, сортировка, фильтры
+- Группировка по категориям
+- Статистика клуба и топ участников
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### PodcastDetail.jsx
+- Аудио плеер с прогрессом
+- Like/Save кнопки
+- Блоки Description, Transcript, AI Summary
+- Аналитика (plays, views, likes, comments)
+- Комментарии с ответами и реакциями
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Library.jsx
+- Три вкладки: Saved, Liked, Playlists
+- Управление плейлистами
+- Удаление из сохранённых
 
-## Learn More
+### MyProgress.jsx
+- XP и уровень пользователя
+- 14 бейджей (monochrome дизайн)
+- Priority Score и Engagement Score
+- Информативные тултипы
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### CreatePodcast.jsx
+- Выбор режима: Live или Upload
+- Поля: Title, Description, Category, Tags
+- Загрузка обложки и аудио
+- Доступ только для Admin/Owner
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+---
 
-### Code Splitting
+## 🎨 Компоненты
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### CommentsSection
+- Вложенные ответы (threading)
+- Реакции на комментарии
+- Цитирование
+- Emoji picker
 
-### Analyzing the Bundle Size
+### GlobalPlayer
+- Персистентный плеер внизу страницы
+- Play/Pause, Seek, Skip
+- Информация о текущем подкасте
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Navigation
+- Адаптивное меню
+- Live вкладка только для Admin/Owner
+- Подключение кошелька
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## ⚙️ Конфигурация
 
-### Advanced Configuration
+### .env
+```env
+REACT_APP_BACKEND_URL=http://localhost:8001
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### tailwind.config.js
+Настройка цветов, шрифтов, анимаций.
 
-### Deployment
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+## 🧪 Тестовый режим
 
-### `npm run build` fails to minify
+```javascript
+// В консоли браузера
+localStorage.setItem('testMode', 'owner');  // owner, admin, user
+location.reload();
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
+
+## 📝 Лицензия
+
+MIT License
