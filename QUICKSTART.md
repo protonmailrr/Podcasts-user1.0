@@ -1,169 +1,249 @@
-# 🚀 Quick Start Guide
+# 🚀 FOMO Voice Club - Quick Start Guide
 
-Быстрый запуск FOMO Podcasts Platform.
+Полное руководство по быстрому запуску проекта.
 
 ---
 
-## 1. Проверка сервисов
+## 📋 Требования
+
+- **Node.js** 18+ ([download](https://nodejs.org/))
+- **Python** 3.11+ ([download](https://python.org/))
+- **MongoDB** 6.0+ ([download](https://mongodb.com/) или MongoDB Atlas)
+- **Yarn** (не npm!): `npm install -g yarn`
+
+---
+
+## ⚡ Быстрый запуск (5 минут)
+
+### 1. Клонирование репозитория
 
 ```bash
-sudo supervisorctl status
+git clone https://github.com/your-org/fomo-voice-club.git
+cd fomo-voice-club
 ```
 
-Должны быть RUNNING:
-- `backend` (FastAPI на порту 8001)
-- `frontend` (React на порту 3000)
-- `telegram_recording_bot` (Telegram бот)
-
----
-
-## 2. Инициализация базы данных
+### 2. Настройка Backend
 
 ```bash
-cd /app/backend
-python init_demo_users.py
-python create_full_demo_data.py  # опционально
+cd backend
+
+# Установка зависимостей
+pip install -r requirements.txt
+
+# Создание .env файла
+cp .env.example .env
 ```
 
----
-
-## 3. Проверка API
-
-```bash
-curl http://localhost:8001/api/
-# {"message":"FOMO Podcast API","version":"6.0 - Phase 6: RSS & Webhooks + Modular Architecture"}
-```
-
----
-
-## 4. Доступ к приложению
-
-| Страница | URL |
-|----------|-----|
-| Главная | https://YOUR-DOMAIN/ |
-| Управление стримами | https://YOUR-DOMAIN/live-management |
-| Админ панель | https://YOUR-DOMAIN/admin |
-
----
-
-## 5. Создание Live Stream
-
-### На сайте:
-1. Перейти в `/live-management`
-2. Нажать **"Create Live Session"**
-3. Заполнить Title и Description
-4. Нажать **"Start"**
-
-### В Telegram:
-1. Уведомление автоматически отправится в @P_FOMO
-2. Слушатели присоединяются через Voice Chat в Telegram
-
-### Завершение:
-1. Нажать **"End"** на странице стрима
-2. Автоматически создаётся подкаст
-3. Уведомление о завершении в @P_FOMO
-
----
-
-## 6. Telegram каналы
-
-| Канал | Назначение |
-|-------|------------|
-| **@P_FOMO** | Уведомления + Voice Chat (слушатели здесь) |
-| **@Podcast_F** | Записи стримов (Recording Bot мониторит) |
-
-### Бот: @Podcast_FOMO_bot
-- Должен быть администратором в обоих каналах
-- Права: публикация сообщений
-
----
-
-## 7. Запись стримов
-
-### Вариант 1: Через Telegram
-1. Запустить Voice Chat в @P_FOMO
-2. Включить запись (настройки Voice Chat)
-3. После окончания → отправить запись в @Podcast_F
-4. Recording Bot автоматически создаст подкаст
-
-### Вариант 2: Через LiveKit
-1. Присоединиться к Audio Room на сайте
-2. LiveKit записывает аудио
-3. При завершении → аудио сохраняется
-
----
-
-## 8. Перезапуск сервисов
-
-```bash
-# Все сервисы
-sudo supervisorctl restart all
-
-# Отдельно
-sudo supervisorctl restart backend
-sudo supervisorctl restart frontend
-sudo supervisorctl restart telegram_recording_bot
-```
-
----
-
-## 9. Просмотр логов
-
-```bash
-# Backend
-tail -f /var/log/supervisor/backend.err.log
-
-# Frontend
-tail -f /var/log/supervisor/frontend.err.log
-
-# Telegram Bot
-tail -f /var/log/supervisor/telegram_bot.err.log
-```
-
----
-
-## 10. Переменные окружения
-
-### Backend (`/app/backend/.env`):
+Отредактируйте `.env`:
 ```env
-MONGO_URL="mongodb://localhost:27017"
-DB_NAME="fomo_voice_club"
-JWT_SECRET_KEY="your-secret"
-TELEGRAM_BOT_TOKEN="your-bot-token"
-TELEGRAM_RECORDING_CHANNEL_ID="-100..."
-TELEGRAM_NOTIFICATIONS_CHANNEL_ID="-100..."
-LIVEKIT_URL="wss://your-livekit.cloud"
-LIVEKIT_API_KEY="your-key"
-LIVEKIT_API_SECRET="your-secret"
+MONGO_URL=mongodb://localhost:27017
+DB_NAME=fomo_voice_club
+JWT_SECRET_KEY=your-super-secret-key-change-this
 ```
 
-### Frontend (`/app/frontend/.env`):
+### 3. Настройка Frontend
+
+```bash
+cd ../frontend
+
+# Установка зависимостей (ВАЖНО: используйте yarn, не npm!)
+yarn install
+
+# Создание .env файла
+cp .env.example .env
+```
+
+Отредактируйте `.env`:
 ```env
-REACT_APP_BACKEND_URL=https://your-domain
+REACT_APP_BACKEND_URL=http://localhost:8001
+```
+
+### 4. Запуск сервисов
+
+**Терминал 1 - Backend:**
+```bash
+cd backend
+uvicorn server:app --host 0.0.0.0 --port 8001 --reload
+```
+
+**Терминал 2 - Frontend:**
+```bash
+cd frontend
+yarn start
+```
+
+### 5. Открытие в браузере
+
+- **Приложение:** http://localhost:3000
+- **API документация:** http://localhost:8001/docs
+
+---
+
+## 🧪 Тестовый режим
+
+Для тестирования разных ролей откройте консоль браузера (F12) и выполните:
+
+```javascript
+// Войти как Owner (полный доступ)
+localStorage.setItem('testMode', 'owner');
+location.reload();
+
+// Войти как Admin
+localStorage.setItem('testMode', 'admin');
+location.reload();
+
+// Войти как обычный пользователь
+localStorage.setItem('testMode', 'user');
+location.reload();
+
+// Выйти из тестового режима
+localStorage.removeItem('testMode');
+location.reload();
 ```
 
 ---
 
-## 11. Troubleshooting
+## 📁 Структура проекта
 
-### Backend не запускается:
-```bash
-tail -n 50 /var/log/supervisor/backend.err.log
-pip install -r /app/backend/requirements.txt
 ```
-
-### Telegram бот не работает:
-1. Проверить токен в `.env`
-2. Проверить что бот - админ в каналах
-3. Проверить логи: `tail -f /var/log/supervisor/telegram_bot.err.log`
-
-### Live сессия не создаётся:
-```bash
-curl -X POST http://localhost:8001/api/live-sessions/sessions \
-  -H "Content-Type: application/json" \
-  -d '{"title": "Test", "description": "Test"}'
+fomo-voice-club/
+├── backend/
+│   ├── routes/          # API endpoints
+│   │   ├── podcasts.py  # Подкасты, реакции, сохранения
+│   │   ├── comments.py  # Комментарии
+│   │   ├── library.py   # Библиотека пользователя
+│   │   ├── xp.py        # XP и уровни
+│   │   ├── badges.py    # Бейджи
+│   │   └── ...
+│   ├── models.py        # Pydantic модели
+│   ├── server.py        # Главный файл FastAPI
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/  # UI компоненты
+│   │   ├── pages/       # Страницы
+│   │   │   ├── Home.jsx
+│   │   │   ├── PodcastDetail.jsx
+│   │   │   ├── Library.jsx
+│   │   │   ├── MyProgress.jsx
+│   │   │   └── ...
+│   │   └── context/     # React контексты
+│   └── package.json
+│
+└── README.md
 ```
 
 ---
 
-*Последнее обновление: 2026-01-03*
+## 🔧 Конфигурация
+
+### Backend `.env`
+
+| Переменная | Описание | Обязательно |
+|------------|----------|-------------|
+| `MONGO_URL` | MongoDB URI | ✅ |
+| `DB_NAME` | Имя базы данных | ✅ |
+| `JWT_SECRET_KEY` | Секрет для JWT | ✅ |
+| `TELEGRAM_BOT_TOKEN` | Токен Telegram бота | ❌ |
+| `LIVEKIT_URL` | URL LiveKit сервера | ❌ |
+| `LIVEKIT_API_KEY` | LiveKit API ключ | ❌ |
+| `LIVEKIT_API_SECRET` | LiveKit секрет | ❌ |
+
+### Frontend `.env`
+
+| Переменная | Описание |
+|------------|----------|
+| `REACT_APP_BACKEND_URL` | URL бэкенда |
+
+---
+
+## 📱 Основные страницы
+
+| URL | Страница | Описание |
+|-----|----------|----------|
+| `/` | Главная | Каталог подкастов с фильтрами |
+| `/podcast/{id}` | Подкаст | Плеер, комментарии, аналитика |
+| `/library` | Библиотека | Saved, Liked, Плейлисты |
+| `/progress` | Прогресс | XP, уровень, бейджи |
+| `/members` | Участники | Список членов клуба |
+| `/create` | Создание | Загрузка или Live |
+| `/admin` | Админка | Управление клубом |
+
+---
+
+## 🐛 Решение проблем
+
+### Backend не запускается
+```bash
+# Проверьте Python версию
+python --version  # должен быть 3.11+
+
+# Переустановите зависимости
+pip install -r requirements.txt --force-reinstall
+```
+
+### Frontend не запускается
+```bash
+# Удалите node_modules и переустановите
+rm -rf node_modules yarn.lock
+yarn install
+```
+
+### MongoDB ошибка подключения
+```bash
+# Проверьте, запущен ли MongoDB
+mongod --version
+sudo systemctl start mongod  # Linux
+brew services start mongodb-community  # Mac
+```
+
+### CORS ошибки
+Убедитесь, что `REACT_APP_BACKEND_URL` указывает на правильный адрес бэкенда.
+
+---
+
+## 🚀 Деплой на продакшн
+
+### 1. Сборка Frontend
+```bash
+cd frontend
+yarn build
+```
+
+### 2. Настройка Production Backend
+```bash
+# Используйте gunicorn с uvicorn workers
+pip install gunicorn
+gunicorn server:app -w 4 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8001
+```
+
+### 3. Настройка Nginx (пример)
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com;
+
+    # Frontend
+    location / {
+        root /var/www/fomo-voice-club/frontend/build;
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Backend API
+    location /api {
+        proxy_pass http://127.0.0.1:8001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+---
+
+## 📞 Поддержка
+
+Если у вас возникли проблемы:
+1. Проверьте раздел "Решение проблем" выше
+2. Откройте Issue в GitHub репозитории
+3. Приложите логи и описание проблемы
