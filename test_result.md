@@ -135,6 +135,10 @@ test_plan:
     - "Like Podcast API (Heart Reactions)"
     - "Get Saved Podcasts API"
     - "Get Liked Podcasts API"
+    - "Library Page - Tab Structure"
+    - "Library Page - Saved Tab Functionality"
+    - "Library Page - Liked Tab Functionality"
+    - "Podcast Detail Page - Sidebar Blocks"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -142,3 +146,5 @@ test_plan:
 agent_communication:
   - agent: "testing"
     message: "Backend API testing completed successfully. All like/save functionality working correctly. Fixed bug in get_podcast_reactions endpoint. Frontend testing was not performed as per system limitations - only backend testing was conducted."
+  - agent: "testing"
+    message: "Frontend testing completed successfully. Library page has correct 3-tab structure (Saved, Liked, Playlists) with no 'My Podcasts' tab as required. Saved tab shows 'Welcome to FOMO Voice Club' podcast. Podcast detail page has all required sidebar blocks (Description, Transcript, AI Summary) under Analytics section. Like/Save buttons are functional with proper state changes. All test scenarios PASSED."
