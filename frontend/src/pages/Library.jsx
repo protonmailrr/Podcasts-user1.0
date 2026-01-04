@@ -30,7 +30,6 @@ export const Library = () => {
   const [activeTab, setActiveTab] = useState('saved');
   const [savedPodcasts, setSavedPodcasts] = useState([]);
   const [likedPodcasts, setLikedPodcasts] = useState([]);
-  const [myPodcasts, setMyPodcasts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
   const [privateAccessPodcasts, setPrivateAccessPodcasts] = useState([]);
   const [loading, setLoading] = useState(true);
