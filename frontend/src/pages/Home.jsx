@@ -645,13 +645,13 @@ export const Home = () => {
               </div>
             )
           ) : (
-            // Grouped by tags
-            Object.entries(podcastsByTag).map(([tagName, tagPodcasts]) => (
+            // Grouped by categories
+            Object.entries(podcastsByCategory).map(([categoryName, categoryPodcasts]) => (
               <HorizontalScrollRow
-                key={tagName}
-                title={tagName === 'All Episodes' ? '🎙️ All Episodes' : tagName.charAt(0).toUpperCase() + tagName.slice(1)}
-                tag={tagName}
-                podcasts={tagPodcasts}
+                key={categoryName}
+                title={categoryName === 'All Episodes' ? '🎙️ All Episodes' : categoryName.charAt(0).toUpperCase() + categoryName.slice(1)}
+                tag={categoryName}
+                podcasts={categoryPodcasts}
                 onPodcastClick={(id) => navigate(`/podcast/${id}`)}
               />
             ))
