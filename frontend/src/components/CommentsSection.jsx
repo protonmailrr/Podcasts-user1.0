@@ -423,7 +423,7 @@ export const CommentsSection = ({ podcastId }) => {
 
   // Add emoji to comment
   const addEmoji = (emoji) => {
-    setNewComment(prev => prev + emoji.native);
+    setNewComment(prev => prev + emoji);
     setShowEmojiPicker(false);
   };
 
