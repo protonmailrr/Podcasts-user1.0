@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { 
-  Bookmark, Heart, List, Plus, Loader2, Play, Mic, Lock
+  Bookmark, Heart, List, Plus, Loader2, Lock
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Card } from '../components/ui/card';
@@ -16,7 +16,6 @@ import { useWallet } from '../context/WalletContext';
 import { 
   LibraryPodcastCard, 
   LibraryPlaylistCard, 
-  MyPodcastCard,
   CreatePlaylistDialog,
   EditPlaylistDialog,
   SharePlaylistDialog,
