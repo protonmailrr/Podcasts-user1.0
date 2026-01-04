@@ -191,6 +191,7 @@ export const CreatePodcast = () => {
         title: formData.title,
         description: formData.description,
         author_id: authorId,
+        category: formData.category || null,
         tags: formData.tags.split(',').map(t => t.trim()).filter(Boolean),
         cover_image: formData.cover_image || 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=500',
         is_live: false,
