@@ -533,52 +533,8 @@ export const PodcastDetail = () => {
             </Card>
 
             {/* Comments Section */}
-            <Card className="bg-white border border-gray-200 rounded-2xl p-6">
-              <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <MessageCircle className="w-5 h-5 text-emerald-500" />
-                Comments ({comments.length})
-              </h3>
-              
-              {/* Add Comment */}
-              <div className="flex gap-3 mb-6">
-                <input
-                  type="text"
-                  value={newComment}
-                  onChange={(e) => setNewComment(e.target.value)}
-                  placeholder="Add a comment..."
-                  className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                  onKeyDown={(e) => e.key === 'Enter' && handleAddComment()}
-                />
-                <Button onClick={handleAddComment} className="bg-emerald-500 hover:bg-emerald-600">
-                  Post
-                </Button>
-              </div>
-              
-              {/* Comments List */}
-              <div className="space-y-4">
-                {comments.length === 0 ? (
-                  <p className="text-center text-gray-500 py-4">No comments yet. Be the first!</p>
-                ) : (
-                  comments.map((comment) => (
-                    <div key={comment.id} className="flex gap-3 p-3 bg-gray-50 rounded-lg">
-                      <Avatar className="w-8 h-8">
-                        <AvatarFallback className="bg-gray-200 text-gray-600 text-sm">
-                          {comment.username?.[0] || 'U'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-1">
-                          <span className="font-medium text-gray-900 text-sm">{comment.username}</span>
-                          <span className="text-xs text-gray-400">
-                            {new Date(comment.created_at).toLocaleDateString()}
-                          </span>
-                        </div>
-                        <p className="text-gray-600 text-sm">{comment.text}</p>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
+            <Card className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
+              <CommentsSection podcastId={id} />
             </Card>
           </div>
 
