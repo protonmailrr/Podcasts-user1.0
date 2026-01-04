@@ -39,6 +39,7 @@ export const CreatePodcast = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
+    category: '',
     tags: '',
     cover_image: '',
     visibility: 'public'
