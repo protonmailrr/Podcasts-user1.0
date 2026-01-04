@@ -47,11 +47,10 @@ export const Library = () => {
   const [managingAccess, setManagingAccess] = useState(null);
   
   const userId = walletAddress || 'demo-user-123';
-  const authorId = walletAddress || 'demo-author-123';
   
   useEffect(() => {
     fetchLibraryData();
-  }, [activeTab, userId, authorId]);
+  }, [activeTab, userId]);
   
   const fetchLibraryData = async () => {
     try {
