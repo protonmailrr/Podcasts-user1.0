@@ -289,8 +289,8 @@ export const Home = () => {
     return result;
   }, [podcasts, searchQuery, sortBy, sortOrder, selectedTags, minDuration, maxDuration, dateFrom, dateTo]);
 
-  // Group podcasts by tags
-  const podcastsByTag = useMemo(() => {
+  // Group podcasts by categories
+  const podcastsByCategory = useMemo(() => {
     const groups = {};
     
     // First, add "All Episodes" with all filtered podcasts
@@ -298,22 +298,25 @@ export const Home = () => {
       groups['All Episodes'] = filteredPodcasts.slice(0, 10);
     }
     
-    // Then group by each tag
-    allTags.forEach(tag => {
-      const tagPodcasts = filteredPodcasts.filter(p => p.tags?.includes(tag));
-      if (tagPodcasts.length > 0) {
-        groups[tag] = tagPodcasts;
+    // Then group by each category
+    allCategories.forEach(category => {
+      const categoryPodcasts = filteredPodcasts.filter(p => {
+        const podcastCategory = p.category || (p.tags && p.tags[0]) || '';
+        return podcastCategory === category;
+      });
+      if (categoryPodcasts.length > 0) {
+        groups[category] = categoryPodcasts;
       }
     });
     
     return groups;
-  }, [filteredPodcasts, allTags, searchQuery, selectedTags]);
+  }, [filteredPodcasts, allCategories, searchQuery, selectedTags]);
 
-  const toggleTag = (tag) => {
+  const toggleCategory = (category) => {
     setSelectedTags(prev => 
-      prev.includes(tag) 
-        ? prev.filter(t => t !== tag)
-        : [...prev, tag]
+      prev.includes(category) 
+        ? prev.filter(c => c !== category)
+        : [...prev, category]
     );
   };
 
