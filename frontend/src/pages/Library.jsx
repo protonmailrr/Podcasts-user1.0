@@ -272,9 +272,6 @@ export const Library = () => {
             <TabsTrigger value="liked" className="rounded-lg">
               <Heart className="w-4 h-4 mr-2" />Liked ({likedPodcasts.length})
             </TabsTrigger>
-            <TabsTrigger value="my-podcasts" className="rounded-lg">
-              <Play className="w-4 h-4 mr-2" />My Podcasts ({myPodcasts.length})
-            </TabsTrigger>
             <TabsTrigger value="playlists" className="rounded-lg">
               <List className="w-4 h-4 mr-2" />Playlists ({playlists.length})
             </TabsTrigger>
