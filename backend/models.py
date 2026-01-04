@@ -107,6 +107,7 @@ class Podcast(BaseModel):
     # Content
     transcript: Optional[str] = None
     ai_summary: Optional[str] = None
+    category: Optional[str] = None
     tags: List[str] = []
     chapters: List[Chapter] = []
     
