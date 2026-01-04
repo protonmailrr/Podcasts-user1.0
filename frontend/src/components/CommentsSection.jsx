@@ -61,6 +61,9 @@ const EmojiPicker = ({ onSelect, onClose }) => {
     </div>
   );
 };
+
+// Format relative time
+const formatTime = (date) => {
   const now = new Date();
   const past = new Date(date);
   const diffMs = now - past;
@@ -76,7 +79,6 @@ const EmojiPicker = ({ onSelect, onClose }) => {
 };
 
 // Single Comment Component
-const Comment = ({
 const Comment = ({ 
   comment, 
   currentUserId, 
