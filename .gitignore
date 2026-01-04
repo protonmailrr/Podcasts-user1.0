@@ -58,3 +58,7 @@ test_reports/
 *.tmp
 frontend/node_modules/.cache/default-development/5.pack
 frontend/node_modules/.cache/default-development/3.pack
+-e 
+# Environment files
+*.env
+*.env.*
