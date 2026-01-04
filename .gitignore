@@ -9,12 +9,16 @@ __pycache__/
 dist/
 build/
 .eggs/
+venv/
+.venv/
 
 # Environment
 .env
 .env.local
 .env.*.local
 !.env.example
+!backend/.env.example
+!frontend/.env.example
 
 # IDE
 .idea/
@@ -39,6 +43,8 @@ coverage/
 .coverage
 htmlcov/
 .tox/
+test_result.md
+test_reports/
 
 # Build
 /frontend/build/
@@ -51,12 +57,4 @@ htmlcov/
 *.bak
 *.tmp
 frontend/node_modules/.cache/default-development/5.pack
-frontend/node_modules/.cache/default-development/1.pack
--e 
-# Environment files
-*.env
-*.env.*
 frontend/node_modules/.cache/default-development/3.pack
-frontend/node_modules/.cache/default-development/9.pack
-frontend/node_modules/.cache/default-development/0.pack
-frontend/node_modules/.cache/default-development/2.pack
