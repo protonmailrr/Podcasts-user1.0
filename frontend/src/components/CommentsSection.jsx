@@ -14,53 +14,33 @@ const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 // Quick reaction emojis
 const QUICK_REACTIONS = ['👍', '❤️', '🔥', '😂', '😮', '👏', '🎯', '💯'];
 
-// All available emojis for picker
-const EMOJI_CATEGORIES = {
-  'Smileys': ['😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🥰', '😍', '🤩', '😘', '😗', '😚', '😋', '😛', '😜', '🤪', '😝', '🤑', '🤗', '🤭', '🤫', '🤔', '😐', '😑', '😶', '😏', '😒', '🙄', '😬', '😮‍💨', '🤥', '😌', '😔', '😪', '🤤', '😴', '😷'],
-  'Gestures': ['👍', '👎', '👊', '✊', '🤛', '🤜', '👏', '🙌', '👐', '🤲', '🤝', '🙏', '✌️', '🤞', '🤟', '🤘', '🤙', '👈', '👉', '👆', '👇', '☝️', '👋', '🤚', '🖐️', '✋', '🖖', '💪'],
-  'Hearts': ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '🤎', '💔', '❣️', '💕', '💞', '💓', '💗', '💖', '💘', '💝', '💟'],
-  'Objects': ['🎯', '💯', '🔥', '⭐', '🌟', '✨', '💫', '🎉', '🎊', '🏆', '🥇', '🎖️', '🏅', '🎁', '💎', '👑', '🎵', '🎶', '💡', '📌']
-};
+// Simplified emoji list for picker
+const EMOJIS = [
+  '😀', '😃', '😄', '😁', '😅', '😂', '🤣', '😊', '😇', '🥰', '😍', '🤩', '😘',
+  '👍', '👎', '👊', '✊', '👏', '🙌', '🤝', '🙏', '✌️', '💪', '👋',
+  '❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '💔', '💕', '💖',
+  '🎯', '💯', '🔥', '⭐', '✨', '🎉', '🏆', '🎁', '💎', '👑', '💡'
+];
 
 // Simple Emoji Picker Component
-const EmojiPicker = ({ onSelect, onClose }) => {
-  const [category, setCategory] = useState('Smileys');
-  
-  return (
-    <div className="absolute bottom-full right-0 mb-2 bg-white border border-gray-200 rounded-xl shadow-xl z-50 w-72">
-      {/* Category tabs */}
-      <div className="flex border-b border-gray-100 p-1 gap-1">
-        {Object.keys(EMOJI_CATEGORIES).map((cat) => (
-          <button
-            key={cat}
-            onClick={() => setCategory(cat)}
-            className={`flex-1 px-2 py-1 text-xs rounded-lg transition-colors ${
-              category === cat ? 'bg-emerald-100 text-emerald-700' : 'text-gray-500 hover:bg-gray-100'
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-      
-      {/* Emoji grid */}
-      <div className="p-2 grid grid-cols-8 gap-1 max-h-40 overflow-y-auto">
-        {EMOJI_CATEGORIES[category].map((emoji) => (
-          <button
-            key={emoji}
-            onClick={() => {
-              onSelect(emoji);
-              onClose();
-            }}
-            className="w-7 h-7 flex items-center justify-center hover:bg-gray-100 rounded transition-colors text-lg"
-          >
-            {emoji}
-          </button>
-        ))}
-      </div>
+const EmojiPicker = ({ onSelect, onClose }) => (
+  <div className="absolute bottom-full right-0 mb-2 bg-white border border-gray-200 rounded-xl shadow-xl z-50 w-64 p-2">
+    <div className="grid grid-cols-8 gap-1 max-h-32 overflow-y-auto">
+      {EMOJIS.map((emoji) => (
+        <button
+          key={emoji}
+          onClick={() => {
+            onSelect(emoji);
+            onClose();
+          }}
+          className="w-7 h-7 flex items-center justify-center hover:bg-gray-100 rounded transition-colors text-lg"
+        >
+          {emoji}
+        </button>
+      ))}
     </div>
-  );
-};
+  </div>
+);
 
 // Format relative time
 const formatTime = (date) => {
