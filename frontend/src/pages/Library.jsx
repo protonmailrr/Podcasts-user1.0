@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { 
-  Bookmark, Heart, List, Plus, Loader2, Lock
+  Bookmark, Heart, List, Plus, Loader2
 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../components/ui/tabs';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
-import { PodcastAccessManager } from '../components/PodcastAccessManager';
 import { toast } from 'sonner';
 import { useWallet } from '../context/WalletContext';
 
@@ -18,8 +16,7 @@ import {
   LibraryPlaylistCard, 
   CreatePlaylistDialog,
   EditPlaylistDialog,
-  SharePlaylistDialog,
-  EditPodcastDialog
+  SharePlaylistDialog
 } from '../components/library';
 
 const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
@@ -31,7 +28,6 @@ export const Library = () => {
   const [savedPodcasts, setSavedPodcasts] = useState([]);
   const [likedPodcasts, setLikedPodcasts] = useState([]);
   const [playlists, setPlaylists] = useState([]);
-  const [privateAccessPodcasts, setPrivateAccessPodcasts] = useState([]);
   const [loading, setLoading] = useState(true);
   
   // Dialog states
@@ -42,9 +38,6 @@ export const Library = () => {
   const [showEditDialog, setShowEditDialog] = useState(false);
   const [sharingPlaylist, setSharingPlaylist] = useState(null);
   const [showShareDialog, setShowShareDialog] = useState(false);
-  const [editingPodcast, setEditingPodcast] = useState(null);
-  const [showEditPodcastDialog, setShowEditPodcastDialog] = useState(false);
-  const [managingAccess, setManagingAccess] = useState(null);
   
   const userId = walletAddress || 'demo-user-123';
   
