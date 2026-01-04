@@ -512,7 +512,7 @@ export const PodcastDetail = () => {
 
             {/* Comments Section */}
             <Card className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-              <CommentsSection podcastId={id} />
+              <CommentsSection podcastId={podcastId} />
             </Card>
           </div>
 
