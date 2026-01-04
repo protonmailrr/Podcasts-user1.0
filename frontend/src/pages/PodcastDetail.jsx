@@ -544,7 +544,7 @@ export const PodcastDetail = () => {
                 </div>
                 <div className="bg-purple-50 rounded-xl p-4 text-center">
                   <MessageCircle className="w-5 h-5 text-purple-600 mx-auto mb-1" />
-                  <p className="text-2xl font-bold text-gray-900">{comments.length}</p>
+                  <p className="text-2xl font-bold text-gray-900">{podcast.comments_count || 0}</p>
                   <p className="text-xs text-gray-500">Comments</p>
                 </div>
               </div>
