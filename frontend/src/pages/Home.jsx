@@ -396,227 +396,222 @@ export const Home = () => {
             </div>
           </div>
 
-          {/* Search, Filter, Sort Bar */}
-          <Card className="bg-white rounded-xl p-4">
-            <div className="flex flex-col sm:flex-row gap-3">
-              {/* Search */}
-              <div className="relative flex-1">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search by title, description, tags..."
-                  className="pl-12 h-12 text-base rounded-xl border-gray-200"
-                />
-                {searchQuery && (
-                  <button 
-                    onClick={() => setSearchQuery('')}
-                    className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                )}
-              </div>
-
-              {/* Filter Button */}
-              <Sheet open={showFilters} onOpenChange={setShowFilters}>
-                <SheetTrigger asChild>
-                  <Button 
-                    variant="outline" 
-                    className={`h-12 px-4 rounded-xl ${hasActiveFilters ? 'border-emerald-500 text-emerald-600' : ''}`}
-                  >
-                    <Filter className="w-5 h-5 mr-2" />
-                    Filters
-                    {hasActiveFilters && (
-                      <Badge className="ml-2 bg-emerald-500">
-                        {selectedTags.length + (minDuration > 0 || maxDuration < 7200 ? 1 : 0) + (dateFrom || dateTo ? 1 : 0)}
-                      </Badge>
-                    )}
-                  </Button>
-                </SheetTrigger>
-                
-                <SheetContent className="w-[400px]">
-                  <SheetHeader>
-                    <SheetTitle className="flex items-center justify-between">
-                      <span>Filters</span>
-                      {hasActiveFilters && (
-                        <Button variant="ghost" size="sm" onClick={clearFilters}>
-                          Clear All
-                        </Button>
-                      )}
-                    </SheetTitle>
-                  </SheetHeader>
-                  
-                  <div className="mt-6 space-y-6">
-                    {/* Sort By */}
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3">Sort By</h4>
-                      <div className="flex gap-2">
-                        <Select value={sortBy} onValueChange={setSortBy}>
-                          <SelectTrigger className="flex-1">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="created_at">Newest</SelectItem>
-                            <SelectItem value="listens_count">Most Listened</SelectItem>
-                            <SelectItem value="views_count">Most Viewed</SelectItem>
-                            <SelectItem value="likes_count">Most Liked</SelectItem>
-                            <SelectItem value="duration">Duration</SelectItem>
-                          </SelectContent>
-                        </Select>
-                        <Select value={sortOrder} onValueChange={setSortOrder}>
-                          <SelectTrigger className="w-32">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="desc">Descending</SelectItem>
-                            <SelectItem value="asc">Ascending</SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </div>
-                    </div>
-
-                    {/* Tags */}
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3">Tags</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {allTags.map(tag => (
-                          <button
-                            key={tag}
-                            onClick={() => toggleTag(tag)}
-                            className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-                              selectedTags.includes(tag)
-                                ? 'bg-emerald-500 text-white'
-                                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                            }`}
-                          >
-                            {tag.charAt(0).toUpperCase() + tag.slice(1)}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Duration */}
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3">
-                        Duration: {formatDuration(minDuration)} - {formatDuration(maxDuration)}
-                      </h4>
-                      <div className="px-2">
-                        <Slider
-                          value={[minDuration, maxDuration]}
-                          onValueChange={([min, max]) => {
-                            setMinDuration(min);
-                            setMaxDuration(max);
-                          }}
-                          min={0}
-                          max={7200}
-                          step={300}
-                          className="my-4"
-                        />
-                      </div>
-                      <div className="flex gap-2 mt-2">
-                        {[
-                          { label: '< 15m', min: 0, max: 900 },
-                          { label: '15-30m', min: 900, max: 1800 },
-                          { label: '30-60m', min: 1800, max: 3600 },
-                          { label: '> 60m', min: 3600, max: 7200 }
-                        ].map((preset) => (
-                          <Button
-                            key={preset.label}
-                            type="button"
-                            variant="outline"
-                            size="sm"
-                            onClick={() => {
-                              setMinDuration(preset.min);
-                              setMaxDuration(preset.max);
-                            }}
-                            className={
-                              minDuration === preset.min && maxDuration === preset.max
-                                ? 'border-emerald-500 text-emerald-600'
-                                : ''
-                            }
-                          >
-                            {preset.label}
-                          </Button>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Date Range */}
-                    <div>
-                      <h4 className="font-semibold text-gray-900 mb-3">Date Range</h4>
-                      <div className="flex gap-2 items-center">
-                        <Input
-                          type="date"
-                          value={dateFrom}
-                          onChange={(e) => setDateFrom(e.target.value)}
-                          className="flex-1"
-                        />
-                        <span className="text-gray-400">to</span>
-                        <Input
-                          type="date"
-                          value={dateTo}
-                          onChange={(e) => setDateTo(e.target.value)}
-                          className="flex-1"
-                        />
-                      </div>
-                    </div>
-
-                    <Button 
-                      className="w-full bg-emerald-500 hover:bg-emerald-600"
-                      onClick={() => setShowFilters(false)}
-                    >
-                      Apply Filters
-                    </Button>
-                  </div>
-                </SheetContent>
-              </Sheet>
+          {/* Search, Sort, Filter Bar */}
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            {/* Search */}
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+              <Input
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search podcasts..."
+                className="pl-10 h-10 text-sm rounded-lg border-gray-200 bg-white"
+              />
+              {searchQuery && (
+                <button 
+                  onClick={() => setSearchQuery('')}
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              )}
             </div>
 
-            {/* Active filters */}
-            {hasActiveFilters && (
-              <div className="mt-3 flex flex-wrap items-center gap-2">
-                <span className="text-sm text-gray-500">Found: {filteredPodcasts.length}</span>
-                {searchQuery && (
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
-                    onClick={() => setSearchQuery('')}
+            {/* Sort Dropdown */}
+            <Select value={sortBy} onValueChange={setSortBy}>
+              <SelectTrigger className="w-[160px] h-10 rounded-lg bg-white">
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="created_at">Newest</SelectItem>
+                <SelectItem value="listens_count">Most Listened</SelectItem>
+                <SelectItem value="views_count">Most Viewed</SelectItem>
+                <SelectItem value="likes_count">Most Liked</SelectItem>
+                <SelectItem value="duration">Duration</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Sort Order */}
+            <Select value={sortOrder} onValueChange={setSortOrder}>
+              <SelectTrigger className="w-[130px] h-10 rounded-lg bg-white">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="desc">Descending</SelectItem>
+                <SelectItem value="asc">Ascending</SelectItem>
+              </SelectContent>
+            </Select>
+
+            {/* Filter Button */}
+            <Sheet open={showFilters} onOpenChange={setShowFilters}>
+              <SheetTrigger asChild>
+                <Button 
+                  variant="outline" 
+                  className={`h-10 px-4 rounded-lg ${hasActiveFilters ? 'border-emerald-500 text-emerald-600' : ''}`}
+                >
+                  <Filter className="w-4 h-4 mr-2" />
+                  Filters
+                  {hasActiveFilters && (
+                    <Badge className="ml-2 bg-emerald-500 text-xs">
+                      {selectedTags.length + (minDuration > 0 || maxDuration < 7200 ? 1 : 0) + (dateFrom || dateTo ? 1 : 0)}
+                    </Badge>
+                  )}
+                </Button>
+              </SheetTrigger>
+              
+              <SheetContent className="w-[400px]">
+                <SheetHeader>
+                  <SheetTitle className="flex items-center justify-between">
+                    <span>Filters</span>
+                    {hasActiveFilters && (
+                      <Button variant="ghost" size="sm" onClick={clearFilters}>
+                        Clear All
+                      </Button>
+                    )}
+                  </SheetTitle>
+                </SheetHeader>
+                
+                <div className="mt-6 space-y-6">
+                  {/* Categories (was Tags) */}
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Categories</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {allTags.map(tag => (
+                        <button
+                          key={tag}
+                          onClick={() => toggleTag(tag)}
+                          className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
+                            selectedTags.includes(tag)
+                              ? 'bg-emerald-500 text-white'
+                              : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                          }`}
+                        >
+                          {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Duration */}
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">
+                      Duration: {formatDuration(minDuration)} - {formatDuration(maxDuration)}
+                    </h4>
+                    <div className="px-2">
+                      <Slider
+                        value={[minDuration, maxDuration]}
+                        onValueChange={([min, max]) => {
+                          setMinDuration(min);
+                          setMaxDuration(max);
+                        }}
+                        min={0}
+                        max={7200}
+                        step={300}
+                        className="my-4"
+                      />
+                    </div>
+                    <div className="flex gap-2 mt-2">
+                      {[
+                        { label: '< 15m', min: 0, max: 900 },
+                        { label: '15-30m', min: 900, max: 1800 },
+                        { label: '30-60m', min: 1800, max: 3600 },
+                        { label: '> 60m', min: 3600, max: 7200 }
+                      ].map((preset) => (
+                        <Button
+                          key={preset.label}
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setMinDuration(preset.min);
+                            setMaxDuration(preset.max);
+                          }}
+                          className={
+                            minDuration === preset.min && maxDuration === preset.max
+                              ? 'border-emerald-500 text-emerald-600'
+                              : ''
+                          }
+                        >
+                          {preset.label}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Date Range */}
+                  <div>
+                    <h4 className="font-semibold text-gray-900 mb-3">Date Range</h4>
+                    <div className="flex gap-2 items-center">
+                      <Input
+                        type="date"
+                        value={dateFrom}
+                        onChange={(e) => setDateFrom(e.target.value)}
+                        className="flex-1"
+                      />
+                      <span className="text-gray-400">to</span>
+                      <Input
+                        type="date"
+                        value={dateTo}
+                        onChange={(e) => setDateTo(e.target.value)}
+                        className="flex-1"
+                      />
+                    </div>
+                  </div>
+
+                  <Button 
+                    className="w-full bg-emerald-500 hover:bg-emerald-600"
+                    onClick={() => setShowFilters(false)}
                   >
-                    "{searchQuery}" <X className="w-3 h-3 ml-1" />
-                  </Badge>
-                )}
-                {selectedTags.map(tag => (
-                  <Badge 
-                    key={tag}
-                    variant="secondary" 
-                    className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
-                    onClick={() => toggleTag(tag)}
-                  >
-                    {tag.charAt(0).toUpperCase() + tag.slice(1)} <X className="w-3 h-3 ml-1" />
-                  </Badge>
-                ))}
-                {(minDuration > 0 || maxDuration < 7200) && (
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
-                    onClick={() => { setMinDuration(0); setMaxDuration(7200); }}
-                  >
-                    {formatDuration(minDuration)} - {formatDuration(maxDuration)} <X className="w-3 h-3 ml-1" />
-                  </Badge>
-                )}
-                {(dateFrom || dateTo) && (
-                  <Badge 
-                    variant="secondary" 
-                    className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
-                    onClick={() => { setDateFrom(''); setDateTo(''); }}
-                  >
-                    {dateFrom || '...'} → {dateTo || '...'} <X className="w-3 h-3 ml-1" />
-                  </Badge>
-                )}
-              </div>
-            )}
-          </Card>
+                    Apply Filters
+                  </Button>
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+
+          {/* Active filters */}
+          {hasActiveFilters && (
+            <div className="mt-3 flex flex-wrap items-center gap-2">
+              <span className="text-sm text-gray-500">Found: {filteredPodcasts.length}</span>
+              {searchQuery && (
+                <Badge 
+                  variant="secondary" 
+                  className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
+                  onClick={() => setSearchQuery('')}
+                >
+                  "{searchQuery}" <X className="w-3 h-3 ml-1" />
+                </Badge>
+              )}
+              {selectedTags.map(tag => (
+                <Badge 
+                  key={tag}
+                  variant="secondary" 
+                  className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
+                  onClick={() => toggleTag(tag)}
+                >
+                  {tag.charAt(0).toUpperCase() + tag.slice(1)} <X className="w-3 h-3 ml-1" />
+                </Badge>
+              ))}
+              {(minDuration > 0 || maxDuration < 7200) && (
+                <Badge 
+                  variant="secondary" 
+                  className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
+                  onClick={() => { setMinDuration(0); setMaxDuration(7200); }}
+                >
+                  {formatDuration(minDuration)} - {formatDuration(maxDuration)} <X className="w-3 h-3 ml-1" />
+                </Badge>
+              )}
+              {(dateFrom || dateTo) && (
+                <Badge 
+                  variant="secondary" 
+                  className="bg-emerald-50 text-emerald-700 cursor-pointer hover:bg-emerald-100"
+                  onClick={() => { setDateFrom(''); setDateTo(''); }}
+                >
+                  {dateFrom || '...'} → {dateTo || '...'} <X className="w-3 h-3 ml-1" />
+                </Badge>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Podcasts by Tags - Horizontal Scroll Rows */}
