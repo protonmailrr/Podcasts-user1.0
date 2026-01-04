@@ -107,21 +107,21 @@ async def get_liked_podcasts(user_id: str):
     """Get all liked podcasts for a user"""
     db = await get_db()
     
-    # First check liked_podcasts collection (if exists)
-    liked = await db.liked_podcasts.find(
-        {"user_id": user_id},
+    # Check podcast_reactions collection for heart reactions
+    reactions = await db.podcast_reactions.find(
+        {"user_id": user_id, "reaction_type": "heart"},
         {"_id": 0}
-    ).sort("liked_at", -1).to_list(1000)
+    ).sort("created_at", -1).to_list(1000)
     
-    if liked:
-        podcast_ids = [l["podcast_id"] for l in liked]
+    if reactions:
+        podcast_ids = list(set([r["podcast_id"] for r in reactions]))
         podcasts = await db.podcasts.find(
             {"id": {"$in": podcast_ids}},
             {"_id": 0}
         ).to_list(1000)
         return podcasts
     
-    # Also check podcasts where user_id is in likes array
+    # Fallback: check podcasts where user_id is in likes array (legacy)
     podcasts = await db.podcasts.find(
         {"likes": user_id},
         {"_id": 0}
