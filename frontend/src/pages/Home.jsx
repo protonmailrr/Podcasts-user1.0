@@ -482,21 +482,21 @@ export const Home = () => {
                 </SheetHeader>
                 
                 <div className="mt-6 space-y-6">
-                  {/* Categories (was Tags) */}
+                  {/* Categories */}
                   <div>
                     <h4 className="font-semibold text-gray-900 mb-3">Categories</h4>
                     <div className="flex flex-wrap gap-2">
-                      {allTags.map(tag => (
+                      {allCategories.map(category => (
                         <button
-                          key={tag}
-                          onClick={() => toggleTag(tag)}
+                          key={category}
+                          onClick={() => toggleCategory(category)}
                           className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all ${
-                            selectedTags.includes(tag)
+                            selectedTags.includes(category)
                               ? 'bg-emerald-500 text-white'
                               : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                           }`}
                         >
-                          {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                          {category.charAt(0).toUpperCase() + category.slice(1)}
                         </button>
                       ))}
                     </div>
