@@ -65,14 +65,6 @@ export const Library = () => {
           const likedRes = await axios.get(`${API}/library/liked/${userId}`);
           setLikedPodcasts(likedRes.data);
           break;
-        case 'my-podcasts':
-          try {
-            const myRes = await axios.get(`${API}/moderation/podcasts/${authorId}`);
-            setMyPodcasts(myRes.data);
-          } catch {
-            setMyPodcasts([]);
-          }
-          break;
         case 'playlists':
           const playlistRes = await axios.get(`${API}/users/${userId}/playlists`);
           setPlaylists(playlistRes.data);
