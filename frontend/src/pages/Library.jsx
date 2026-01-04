@@ -303,31 +303,6 @@ export const Library = () => {
             )}
           </TabsContent>
           
-          {/* My Podcasts Tab */}
-          <TabsContent value="my-podcasts">
-            {loading ? <LoadingState /> : myPodcasts.length === 0 ? (
-              <EmptyState icon={Mic} title="No podcasts created" description="Create your first podcast to share with the world" action={() => navigate('/create')} actionLabel={<><Plus className="w-4 h-4 mr-2" />Create Podcast</>} />
-            ) : (
-              <div className="space-y-4">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-lg font-semibold text-gray-900">Your Podcasts ({myPodcasts.length})</h2>
-                  <Button onClick={() => navigate('/create')} className="bg-emerald-500 hover:bg-emerald-600">
-                    <Plus className="w-4 h-4 mr-2" />Create New
-                  </Button>
-                </div>
-                {myPodcasts.map((podcast) => (
-                  <MyPodcastCard 
-                    key={podcast.id} 
-                    podcast={podcast} 
-                    onEdit={handleEditPodcast}
-                    onDelete={handleDeletePodcast}
-                    onManageAccess={setManagingAccess}
-                  />
-                ))}
-              </div>
-            )}
-          </TabsContent>
-          
           {/* Playlists Tab */}
           <TabsContent value="playlists">
             <div className="mb-6">
