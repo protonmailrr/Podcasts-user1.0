@@ -201,13 +201,18 @@ export const Home = () => {
     }
   };
 
-  // Get all unique tags
-  const allTags = useMemo(() => {
-    const tags = new Set();
+  // Get all unique categories (from category field or first tag as fallback)
+  const allCategories = useMemo(() => {
+    const categories = new Set();
     podcasts.forEach(p => {
-      (p.tags || []).forEach(tag => tags.add(tag));
+      if (p.category) {
+        categories.add(p.category);
+      } else if (p.tags && p.tags.length > 0) {
+        // Use first tag as category fallback
+        categories.add(p.tags[0]);
+      }
     });
-    return Array.from(tags).sort();
+    return Array.from(categories).sort();
   }, [podcasts]);
 
   // Check if filters are active
@@ -224,15 +229,17 @@ export const Home = () => {
       result = result.filter(p => 
         p.title?.toLowerCase().includes(query) ||
         p.description?.toLowerCase().includes(query) ||
+        p.category?.toLowerCase().includes(query) ||
         p.tags?.some(tag => tag.toLowerCase().includes(query))
       );
     }
 
-    // Tags filter
+    // Categories filter (using selectedTags state for categories)
     if (selectedTags.length > 0) {
-      result = result.filter(p => 
-        p.tags?.some(tag => selectedTags.includes(tag))
-      );
+      result = result.filter(p => {
+        const podcastCategory = p.category || (p.tags && p.tags[0]) || '';
+        return selectedTags.includes(podcastCategory);
+      });
     }
     
     // Duration filter
