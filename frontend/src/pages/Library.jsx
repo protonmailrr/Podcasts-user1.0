@@ -283,29 +283,6 @@ export const Library = () => {
           onShareTwitter={shareToTwitter}
         />
         
-        <EditPodcastDialog
-          open={showEditPodcastDialog}
-          onOpenChange={(open) => { setShowEditPodcastDialog(open); if (!open) setEditingPodcast(null); }}
-          podcast={editingPodcast}
-          setPodcast={setEditingPodcast}
-          onSave={handleUpdatePodcast}
-        />
-        
-        {/* Access Management Dialog */}
-        {managingAccess && (
-          <Dialog open={!!managingAccess} onOpenChange={() => setManagingAccess(null)}>
-            <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="flex items-center gap-2">
-                  <Lock className="w-5 h-5 text-amber-600" />
-                  Manage Access: {managingAccess.title}
-                </DialogTitle>
-              </DialogHeader>
-              <PodcastAccessManager podcastId={managingAccess.id} authorId={managingAccess.author_id} />
-            </DialogContent>
-          </Dialog>
-        )}
-        
       </div>
     </div>
   );
