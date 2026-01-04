@@ -178,40 +178,6 @@ export const Library = () => {
     }
   };
   
-  const handleEditPodcast = (podcast) => {
-    setEditingPodcast({...podcast, tags: podcast.tags || []});
-    setShowEditPodcastDialog(true);
-  };
-  
-  const handleUpdatePodcast = async () => {
-    if (!editingPodcast) return;
-    try {
-      const formData = new FormData();
-      formData.append('title', editingPodcast.title);
-      formData.append('description', editingPodcast.description);
-      formData.append('tags', editingPodcast.tags.join(', '));
-      formData.append('visibility', editingPodcast.visibility);
-      await axios.put(`${API}/moderation/podcasts/${editingPodcast.id}`, formData);
-      toast.success('Podcast updated');
-      setShowEditPodcastDialog(false);
-      setEditingPodcast(null);
-      fetchLibraryData();
-    } catch (error) {
-      toast.error('Failed to update podcast');
-    }
-  };
-  
-  const handleDeletePodcast = async (podcastId) => {
-    if (!window.confirm('Are you sure you want to delete this podcast? This action cannot be undone.')) return;
-    try {
-      await axios.delete(`${API}/moderation/podcasts/${podcastId}`);
-      toast.success('Podcast deleted');
-      fetchLibraryData();
-    } catch (error) {
-      toast.error('Failed to delete podcast');
-    }
-  };
-  
   // Empty state component
   const EmptyState = ({ icon: Icon, title, description, action, actionLabel, iconBgClass = "bg-gray-100" }) => (
     <Card className="bg-white rounded-2xl p-12 text-center">
