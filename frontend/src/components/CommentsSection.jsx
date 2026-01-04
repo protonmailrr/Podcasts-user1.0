@@ -492,15 +492,10 @@ export const CommentsSection = ({ podcastId }) => {
                 </button>
                 
                 {showEmojiPicker && (
-                  <div className="absolute bottom-full right-0 mb-2 z-50">
-                    <Picker 
-                      data={data} 
-                      onEmojiSelect={addEmoji}
-                      theme="light"
-                      previewPosition="none"
-                      skinTonePosition="none"
-                    />
-                  </div>
+                  <EmojiPicker 
+                    onSelect={addEmoji}
+                    onClose={() => setShowEmojiPicker(false)}
+                  />
                 )}
               </div>
               
