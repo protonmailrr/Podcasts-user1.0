@@ -302,6 +302,17 @@ export const CreatePodcast = () => {
       </div>
       
       <div>
+        <Label>Category</Label>
+        <Input
+          value={formData.category}
+          onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+          placeholder="e.g., DeFi, Technology, News"
+          className="mt-1"
+        />
+        <p className="text-xs text-gray-500 mt-1">Main category for this podcast</p>
+      </div>
+      
+      <div>
         <Label>Tags</Label>
         <Input
           value={formData.tags}
@@ -309,6 +320,7 @@ export const CreatePodcast = () => {
           placeholder="tech, podcast, live"
           className="mt-1"
         />
+        <p className="text-xs text-gray-500 mt-1">Additional tags, separated by commas</p>
       </div>
 
       <Button
