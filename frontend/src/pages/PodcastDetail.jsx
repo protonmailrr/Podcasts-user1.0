@@ -197,22 +197,6 @@ export const PodcastDetail = () => {
     toast.success('Link copied!');
   };
 
-  const handleAddComment = async () => {
-    if (!newComment.trim()) return;
-    try {
-      const formData = new FormData();
-      formData.append('user_id', currentUserId);
-      formData.append('username', 'User');
-      formData.append('text', newComment);
-      const response = await axios.post(`${API}/podcasts/${podcastId}/comments`, formData);
-      setComments([response.data, ...comments]);
-      setNewComment('');
-      toast.success('Comment added!');
-    } catch (error) {
-      console.error('Failed to add comment:', error);
-    }
-  };
-
   const progress = isCurrentPodcast && duration > 0 ? (currentTime / duration) * 100 : 0;
 
   if (loading) {
